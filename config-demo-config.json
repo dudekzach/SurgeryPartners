@@ -1,0 +1,37 @@
+{
+  "customerName": "Surgery Partners",
+  "productName": "SP Connect",
+  "branding": {
+    "primaryColor": "#6ba5b4",
+    "primaryColorDark": "#457e93",
+    "logoPath": "surgery-partners-logo.png"
+  },
+  "navigation": [
+    { "label": "Dashboard", "href": "dashboard.html", "icon": "dashboard" },
+    { "label": "Research", "href": "research.html", "icon": "search" },
+    { "label": "Documents", "href": "documents.html", "icon": "file" },
+    { "label": "Billing", "href": "billing.html", "icon": "dollar-sign" }
+  ],
+  "personas": [
+    {
+      "name": "Patient Access",
+      "description": "Handles scheduling, patient calls, and frontline support."
+    },
+    {
+      "name": "Supervisor/Manager",
+      "description": "Oversees live operations, supports team, manages escalations and quality."
+    }
+  ],
+  "features": {
+    "skillsBasedRouting": true,
+    "screenRecording": true,
+    "reportingAnalytics": true,
+    "supervisorBargeIn": true,
+    "callRecordingRetrieval": true,
+    "operationalKPI": true
+  },
+  "messenger": {
+    "enabled": true,
+    "deploymentId": "0042b643-9e47-4c81-b7c3-fbe66fb52dd8"
+  }
+}
