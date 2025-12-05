@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Surgery Partners – Research & Recordings</title>
+  <link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+  <header class="app-header">
+    <img src="surgery-partners-logo.png" class="app-logo" alt="Surgery Partners Logo" />
+  </header>
+  <nav class="app-nav">
+    <div class="app-nav-inner">
+      <a href="dashboard.html" class="app-nav-link" id="navDashboard">Dashboard</a>
+      <a href="research.html" class="app-nav-link app-nav-active" id="navResearch">Research</a>
+      <a href="documents.html" class="app-nav-link" id="navDocuments">Documents</a>
+      <a href="billing.html" class="app-nav-link" id="navBilling">Billing</a>
+      <a href="login.html" class="app-nav-link app-nav-right">Logout</a>
+    </div>
+  </nav>
+  <main class="app-main app-page-transition">
+    <h1 style="margin-bottom:8px;">Call & Interaction Research</h1>
+    <p class="app-muted" style="margin-bottom:18px;">
+      Search, retrieve, and analyze patient access calls and recordings in real time.
+    </p>
+    <div class="app-card" style="margin-bottom:20px;">
+      <h3 style="margin-top:0;">Find a Call or Recording</h3>
+      <form style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px;">
+        <input type="text" placeholder="Patient Name or ID" style="flex:1; min-width:180px; padding:8px; border-radius:8px; border:1px solid #ccc;" />
+        <input type="date" style="flex:1; min-width:140px; padding:8px; border-radius:8px; border:1px solid #ccc;" />
+        <button class="app-btn-primary" type="submit" style="min-width:110px;">Search</button>
+      </form>
+      <div style="margin-top:10px;">
+        <span class="app-muted">Example: Search by patient, date, or case number to access call and screen recordings for review or training.</span>
+      </div>
+      <div style="margin-top:18px;">
+        <table style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr style="background:#f0f4f8;">
+              <th style="text-align:left; padding:7px;">Date</th>
+              <th style="text-align:left; padding:7px;">Patient</th>
+              <th style="text-align:left; padding:7px;">Agent</th>
+              <th style="text-align:left; padding:7px;">Duration</th>
+              <th style="text-align:left; padding:7px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:7px;">2024-05-03</td>
+              <td style="padding:7px;">Amanda Rivers</td>
+              <td style="padding:7px;">Alex Ng</td>
+              <td style="padding:7px;">5:22</td>
+              <td style="padding:7px;">
+                <button class="app-btn-secondary" style="font-size:0.86rem;">Play Recording</button>
+                <button class="app-btn-secondary" style="font-size:0.86rem;">Screen Recording</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:7px;">2024-05-03</td>
+              <td style="padding:7px;">Tyson Jones</td>
+              <td style="padding:7px;">Sara Miles</td>
+              <td style="padding:7px;">7:14</td>
+              <td style="padding:7px;">
+                <button class="app-btn-secondary" style="font-size:0.86rem;">Play Recording</button>
+                <button class="app-btn-secondary" style="font-size:0.86rem;">Screen Recording</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:7px;">2024-05-02</td>
+              <td style="padding:7px;">Donna Stern</td>
+              <td style="padding:7px;">Luis Patel</td>
+              <td style="padding:7px;">8:41</td>
+              <td style="padding:7px;">
+                <button class="app-btn-secondary" style="font-size:0.86rem;">Play Recording</button>
+                <button class="app-btn-secondary" style="font-size:0.86rem;">Screen Recording</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="app-grid">
+      <div class="app-card">
+        <h4 style="margin-top:0;">Live Queue Monitor</h4>
+        <div class="app-muted" style="margin-bottom:6px;">Current queue: <strong>6</strong></div>
+        <button class="app-btn-primary" style="width:100%;">Jump in / Take Over Call</button>
+      </div>
+      <div class="app-card">
+        <h4 style="margin-top:0;">Supervisor Knowledge</h4>
+        <ul class="app-muted" style="margin:0 0 6px 16px; font-size:1rem;">
+          <li>How to retrieve a call recording after a call</li>
+          <li>How to escalate and join a live call</li>
+          <li>Using analytics for staffing and workflow changes</li>
+        </ul>
+      </div>
+    </div>
+    <div class="app-muted" style="margin-top:16px;">
+      Need real-time workforce changes? Contact Operations or use <a href="dashboard.html" style="color:var(--brand-primary);">Dashboard</a>.
+    </div>
+  </main>
+  <!-- Genesys Messenger snippet -->
+  <script type="text/javascript" charset="utf-8">
+    (function (g, e, n, es, ys) {
+      g['_genesysJs'] = e;
+      g[e] = g[e] || function () { (g[e].q = g[e].q || []).push(arguments) };
+      g[e].t = 1 * new Date();
+      g[e].c = es;
+      ys = document.createElement('script'); ys.async = 1; ys.src = n;
+      ys.charset = 'utf-8'; document.head.appendChild(ys);
+    })(window, 'Genesys', 'https://apps.mypurecloud.com/genesys-bootstrap/genesys.min.js', {
+      environment: 'prod',
+      deploymentId: '0042b643-9e47-4c81-b7c3-fbe66fb52dd8'
+    });
+  </script>
+</body>
+</html>
