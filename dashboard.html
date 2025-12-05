@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Surgery Partners – Dashboard</title>
+  <link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+  <header class="app-header">
+    <img src="surgery-partners-logo.png" class="app-logo" alt="Surgery Partners Logo" />
+  </header>
+  <nav class="app-nav">
+    <div class="app-nav-inner">
+      <a href="dashboard.html" class="app-nav-link app-nav-active" id="navDashboard">Dashboard</a>
+      <a href="research.html" class="app-nav-link" id="navResearch">Research</a>
+      <a href="documents.html" class="app-nav-link" id="navDocuments">Documents</a>
+      <a href="billing.html" class="app-nav-link" id="navBilling">Billing</a>
+      <a href="login.html" class="app-nav-link app-nav-right">Logout</a>
+    </div>
+  </nav>
+  <main class="app-main app-page-transition">
+    <h1 style="margin-bottom:8px;">Operations Dashboard</h1>
+    <p class="app-muted" style="margin-bottom:18px;">
+      Real-time visibility into Patient Access operations, queue status, and supervisor actions.
+    </p>
+    <div class="app-grid" style="margin-bottom:24px;">
+      <!-- Operational KPIs -->
+      <div class="app-card">
+        <h3 style="margin:0 0 4px 0;">Calls in Queue</h3>
+        <div style="font-size:2.2rem; font-weight:500; margin-bottom:4px;" id="callsInQueue">6</div>
+        <div class="app-muted">Live as of 2:32pm</div>
+      </div>
+      <div class="app-card">
+        <h3 style="margin:0 0 4px 0;">Average Handle Time</h3>
+        <div style="font-size:2.2rem; font-weight:500; margin-bottom:4px;" id="aht">6:41 min</div>
+        <div class="app-muted">Today</div>
+      </div>
+      <div class="app-card">
+        <h3 style="margin:0 0 4px 0;">Staff On Duty</h3>
+        <div style="font-size:2.2rem; font-weight:500; margin-bottom:4px;" id="staffOnDuty">18</div>
+        <div class="app-muted">Patient Access team</div>
+      </div>
+      <div class="app-card">
+        <h3 style="margin:0 0 4px 0;">Call Volume (Today)</h3>
+        <div style="font-size:2.2rem; font-weight:500; margin-bottom:4px;" id="callVolume">134</div>
+        <div class="app-muted">as of 2:32pm</div>
+      </div>
+    </div>
+    <!-- Supervisor Actions & Alerts -->
+    <div class="app-grid" style="margin-bottom:24px;">
+      <div class="app-card" style="min-width:240px;">
+        <h4 style="margin:0 0 6px 0;">Supervisor Actions</h4>
+        <button class="app-btn-primary" style="margin-bottom:8px; width:100%;">Jump in / Take Over Live Call</button>
+        <button class="app-btn-secondary" style="width:100%;">Retrieve Call Recording</button>
+      </div>
+      <div class="app-card" style="min-width:240px;">
+        <h4 style="margin:0 0 6px 0;">Live Alerts</h4>
+        <ul style="margin:0; padding-left:16px;">
+          <li><strong>High queue detected</strong> – Supervisor intervention recommended</li>
+          <li><strong>Staffing under target</strong> – 2 FTEs needed</li>
+        </ul>
+      </div>
+    </div>
+    <!-- Metrics Trend Chart Placeholder -->
+    <div class="app-card" style="margin-bottom:18px;">
+      <h4 style="margin:0 0 6px 0;">Operational Efficiency Trend</h4>
+      <div style="width:100%; height:160px; background:#f0f4f8; border-radius:10px; display:flex; align-items:center; justify-content:center;">
+        <span class="app-muted">[Analytics chart integration demo – see Reporting page for details]</span>
+      </div>
+    </div>
+    <div class="app-muted" style="margin-top:10px;">
+      For real-time workforce changes and advanced reporting, go to <a href="research.html" style="color:var(--brand-primary);">Research</a>.
+    </div>
+  </main>
+  <!-- Genesys Messenger snippet -->
+  <script type="text/javascript" charset="utf-8">
+    (function (g, e, n, es, ys) {
+      g['_genesysJs'] = e;
+      g[e] = g[e] || function () { (g[e].q = g[e].q || []).push(arguments) };
+      g[e].t = 1 * new Date();
+      g[e].c = es;
+      ys = document.createElement('script'); ys.async = 1; ys.src = n;
+      ys.charset = 'utf-8'; document.head.appendChild(ys);
+    })(window, 'Genesys', 'https://apps.mypurecloud.com/genesys-bootstrap/genesys.min.js', {
+      environment: 'prod',
+      deploymentId: '0042b643-9e47-4c81-b7c3-fbe66fb52dd8'
+    });
+  </script>
+</body>
+</html>
