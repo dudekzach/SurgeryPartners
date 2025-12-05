@@ -1,0 +1,105 @@
+{
+  "tasks": [
+    {
+      "id": "T-1001",
+      "title": "Assist live call: Amanda Rivers",
+      "status": "In Progress",
+      "priority": "High",
+      "assignee": "Supervisor",
+      "timestamp": "2024-05-03T14:23:00Z"
+    },
+    {
+      "id": "T-1002",
+      "title": "Pull recording: Donna Stern 05/02",
+      "status": "Ready",
+      "priority": "Normal",
+      "assignee": "Manager",
+      "timestamp": "2024-05-03T13:14:00Z"
+    }
+  ],
+  "callRecordings": [
+    {
+      "id": "CR-2379",
+      "patient": "Amanda Rivers",
+      "agent": "Alex Ng",
+      "date": "2024-05-03",
+      "duration": "5:22",
+      "audioUrl": "#",
+      "screenRecordingUrl": "#"
+    },
+    {
+      "id": "CR-2380",
+      "patient": "Tyson Jones",
+      "agent": "Sara Miles",
+      "date": "2024-05-03",
+      "duration": "7:14",
+      "audioUrl": "#",
+      "screenRecordingUrl": "#"
+    },
+    {
+      "id": "CR-2381",
+      "patient": "Donna Stern",
+      "agent": "Luis Patel",
+      "date": "2024-05-02",
+      "duration": "8:41",
+      "audioUrl": "#",
+      "screenRecordingUrl": "#"
+    }
+  ],
+  "documents": [
+    {
+      "name": "Patient Scheduling SOP (v2.1)",
+      "category": "SOP",
+      "url": "#"
+    },
+    {
+      "name": "Call Escalation Policy",
+      "category": "SOP",
+      "url": "#"
+    },
+    {
+      "name": "Screen Recording Usage Guide",
+      "category": "SOP",
+      "url": "#"
+    },
+    {
+      "name": "HIPAA Call Handling Checklist",
+      "category": "Compliance",
+      "url": "#"
+    },
+    {
+      "name": "Quality Assurance Procedures",
+      "category": "Compliance",
+      "url": "#"
+    },
+    {
+      "name": "Supervisor Quick Reference",
+      "category": "Resource",
+      "url": "#"
+    }
+  ],
+  "invoices": [
+    {
+      "invoiceId": "INV-21057",
+      "accountNumber": "209182",
+      "patient": "Donna Stern",
+      "amount": 274.00,
+      "date": "2024-05-02",
+      "status": "Unpaid"
+    },
+    {
+      "invoiceId": "INV-21058",
+      "accountNumber": "118452",
+      "patient": "Amanda Rivers",
+      "amount": 96.00,
+      "date": "2024-05-01",
+      "status": "Paid"
+    }
+  ],
+  "insights": {
+    "callsInQueue": 6,
+    "averageHandleTime": "6:41",
+    "staffOnDuty": 18,
+    "callVolumeToday": 134
+  }
+}
