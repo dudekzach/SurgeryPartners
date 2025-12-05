@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Surgery Partners – Documents</title>
+  <link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+  <header class="app-header">
+    <img src="surgery-partners-logo.png" class="app-logo" alt="Surgery Partners Logo" />
+  </header>
+  <nav class="app-nav">
+    <div class="app-nav-inner">
+      <a href="dashboard.html" class="app-nav-link" id="navDashboard">Dashboard</a>
+      <a href="research.html" class="app-nav-link" id="navResearch">Research</a>
+      <a href="documents.html" class="app-nav-link app-nav-active" id="navDocuments">Documents</a>
+      <a href="billing.html" class="app-nav-link" id="navBilling">Billing</a>
+      <a href="login.html" class="app-nav-link app-nav-right">Logout</a>
+    </div>
+  </nav>
+  <main class="app-main app-page-transition">
+    <h1 style="margin-bottom:8px;">Resources & Documents</h1>
+    <p class="app-muted" style="margin-bottom:18px;">
+      Standard operating procedures, compliance documents, and team resources for Patient Access and Supervisors.
+    </p>
+    <div class="app-layout-2col">
+      <div>
+        <div class="app-card" style="margin-bottom:14px;">
+          <h4 style="margin-top:0;">Standard Operating Procedures</h4>
+          <ul style="margin:0 0 0 16px; padding:0;">
+            <li><a href="#" style="color:var(--brand-primary);">Patient Scheduling SOP (v2.1)</a></li>
+            <li><a href="#" style="color:var(--brand-primary);">Call Escalation Policy</a></li>
+            <li><a href="#" style="color:var(--brand-primary);">Screen Recording Usage Guide</a></li>
+          </ul>
+        </div>
+        <div class="app-card">
+          <h4 style="margin-top:0;">Compliance Documents</h4>
+          <ul style="margin:0 0 0 16px; padding:0;">
+            <li><a href="#" style="color:var(--brand-primary);">HIPAA Call Handling Checklist</a></li>
+            <li><a href="#" style="color:var(--brand-primary);">Quality Assurance Procedures</a></li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="app-card">
+          <h4 style="margin-top:0;">Team Resources</h4>
+          <ul style="margin:0 0 0 16px; padding:0;">
+            <li><a href="#" style="color:var(--brand-primary);">Supervisor Quick Reference</a></li>
+            <li><a href="#" style="color:var(--brand-primary);">Patient Access FAQ</a></li>
+            <li><a href="#" style="color:var(--brand-primary);">WFM: Real-Time Adjustment Guide</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="app-muted" style="margin-top:16px;">
+      For billing, insurance, or patient payment forms, go to <a href="billing.html" style="color:var(--brand-primary);">Billing</a>.
+    </div>
+  </main>
+  <!-- Genesys Messenger snippet -->
+  <script type="text/javascript" charset="utf-8">
+    (function (g, e, n, es, ys) {
+      g['_genesysJs'] = e;
+      g[e] = g[e] || function () { (g[e].q = g[e].q || []).push(arguments) };
+      g[e].t = 1 * new Date();
+      g[e].c = es;
+      ys = document.createElement('script'); ys.async = 1; ys.src = n;
+      ys.charset = 'utf-8'; document.head.appendChild(ys);
+    })(window, 'Genesys', 'https://apps.mypurecloud.com/genesys-bootstrap/genesys.min.js', {
+      environment: 'prod',
+      deploymentId: '0042b643-9e47-4c81-b7c3-fbe66fb52dd8'
+    });
+  </script>
+</body>
+</html>
