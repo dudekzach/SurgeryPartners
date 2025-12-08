@@ -115,17 +115,18 @@
   .check-item {
     display: flex;
     align-items: center;
+    gap: 10px;
     margin-bottom: 14px;
     font-size: 0.95rem;
   }
 
   .check-item input {
-    margin-right: 10px;
-    width: auto;
+    width: 18px;
     height: 18px;
+    margin: 0;
   }
 
-  /* ---------------- ACTIONS --------------------- */
+  /* ---------------- ACTION BUTTONS -------------- */
   .actions {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -184,7 +185,37 @@
     border-bottom: 1px solid #e6eaef;
   }
 
-  /* -------------- TAB CONTENT ------------------- */
+  /* ---------------- COST BREAKDOWN CARD -------- */
+  .breakdown-card {
+    background: #ffffff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    margin-top: 10px;
+    display: none;
+  }
+
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 0.9rem;
+  }
+
+  .breakdown-divider {
+    border-top: 1px solid #d9dee4;
+    margin: 10px 0;
+  }
+
+  .toggle-breakdown {
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-top: -10px;
+  }
+
+  /* ---------------- TAB CONTENT ---------------- */
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
@@ -208,7 +239,7 @@
   <!-- ---------------- TAB: Patient Context ---------------- -->
   <div id="context" class="tab-content active">
     <div class="card">
-      <h3>Patient Context (Auto-populated)</h3>
+      <h3>Patient Context</h3>
 
       <div class="grid-2">
         <div><label>Patient Name</label><input id="ptName" readonly></div>
@@ -221,7 +252,33 @@
         <div><label>Center / Facility</label><input id="ptCenter" readonly></div>
 
         <div><label>Insurance Plan</label><input id="ptInsurance" readonly></div>
-        <div><label>Patient Responsibility Estimate</label><input id="ptBalance" readonly></div>
+
+        <div>
+          <label>Patient Responsibility Estimate</label>
+          <input id="ptBalance" readonly />
+
+          <div class="toggle-breakdown" onclick="toggleBreakdown()">
+            ▼ View Cost Breakdown
+          </div>
+
+          <div id="breakdownCard" class="breakdown-card">
+            <div class="breakdown-row">
+              <span>Deductible:</span><span id="deductibleVal">$0</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Coinsurance:</span><span id="coinsuranceVal">$0</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Copay:</span><span id="copayVal">$0</span>
+            </div>
+            <div class="breakdown-divider"></div>
+            <div class="breakdown-row">
+              <span><strong>Total Estimate:</strong></span>
+              <span id="totalEstimateVal"><strong>$0</strong></span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -231,12 +288,12 @@
     <div class="card">
       <h3>Pre-Service Collection Workflow</h3>
 
-      <div class="check-item"><input type="checkbox"> Verify patient identity (DOB + Phone)</div>
-      <div class="check-item"><input type="checkbox"> Confirm upcoming procedure & facility</div>
-      <div class="check-item"><input type="checkbox"> Review insurance verification status</div>
-      <div class="check-item"><input type="checkbox"> Present patient responsibility estimate</div>
-      <div class="check-item"><input type="checkbox"> Offer payment options (full, partial, plan)</div>
-      <div class="check-item"><input type="checkbox"> Document payment commitment & note in HST</div>
+      <div class="check-item"><input type="checkbox">Verify patient identity (DOB + Phone)</div>
+      <div class="check-item"><input type="checkbox">Confirm upcoming procedure & facility</div>
+      <div class="check-item"><input type="checkbox">Review insurance verification status</div>
+      <div class="check-item"><input type="checkbox">Present patient responsibility estimate</div>
+      <div class="check-item"><input type="checkbox">Offer payment options (full, partial, plan)</div>
+      <div class="check-item"><input type="checkbox">Document payment commitment & note in HST</div>
 
       <div class="actions">
         <button class="btn btn-primary">Collect Payment</button>
@@ -251,10 +308,10 @@
     <div class="card">
       <h3>Patient Contact Preferences</h3>
 
-      <div class="check-item"><input type="checkbox" id="prefSMS"> SMS</div>
-      <div class="check-item"><input type="checkbox" id="prefEmail"> Email</div>
-      <div class="check-item"><input type="checkbox" id="prefVoice"> Voice</div>
-      <div class="check-item"><input type="checkbox" id="prefPlan"> Enrolled in Pre-Op Payment Plan</div>
+      <div class="check-item"><input type="checkbox" id="prefSMS">SMS</div>
+      <div class="check-item"><input type="checkbox" id="prefEmail">Email</div>
+      <div class="check-item"><input type="checkbox" id="prefVoice">Voice</div>
+      <div class="check-item"><input type="checkbox" id="prefPlan">Enrolled in Pre-Op Payment Plan</div>
     </div>
   </div>
 
@@ -273,25 +330,25 @@
         <div class="event">
           <div class="date">Dec 8, 2025</div>
           <div class="type">SMS</div>
-          <div class="summary">Reminder sent: “Your procedure is scheduled for Dec 12.”</div>
+          <div class="summary">Reminder sent for upcoming procedure.</div>
         </div>
 
         <div class="event">
           <div class="date">Dec 7, 2025</div>
           <div class="type">Inbound Call</div>
-          <div class="summary">Reviewed checklist, patient paid $150 toward balance.</div>
+          <div class="summary">Reviewed checklist and collected $150.</div>
         </div>
 
         <div class="event">
           <div class="date">Dec 5, 2025</div>
           <div class="type">Outbound Call</div>
-          <div class="summary">Insurance verification completed, surgery details confirmed.</div>
+          <div class="summary">Confirmed insurance verification.</div>
         </div>
 
         <div class="event">
           <div class="date">Dec 3, 2025</div>
           <div class="type">Outbound Call</div>
-          <div class="summary">No answer. Voicemail left.</div>
+          <div class="summary">Unable to reach patient. Voicemail left.</div>
         </div>
       </div>
     </div>
@@ -305,18 +362,18 @@
       <table class="ehr-table">
         <tr><td><strong>Primary Diagnosis:</strong></td><td>Cholelithiasis (K80.20)</td></tr>
         <tr><td><strong>Scheduled Procedure:</strong></td><td>Laparoscopic Cholecystectomy</td></tr>
-        <tr><td><strong>Allergies:</strong></td><td>Penicillin (rash), Latex (contact reaction)</td></tr>
+        <tr><td><strong>Allergies:</strong></td><td>Penicillin, Latex</td></tr>
         <tr><td><strong>Medications:</strong></td><td>Metformin 500mg, Atorvastatin 20mg</td></tr>
         <tr><td><strong>Past Procedures:</strong></td><td>Colonoscopy – 2022</td></tr>
-        <tr><td><strong>Pre-Op Clearance:</strong></td><td>Completed – PCP on 11/28/25</td></tr>
+        <tr><td><strong>Pre-Op Clearance:</strong></td><td>Completed – PCP (11/28/25)</td></tr>
         <tr><td><strong>Primary Care Provider:</strong></td><td>Dr. Susan Miller</td></tr>
       </table>
 
       <h3>Clinical Notes</h3>
       <p class="app-muted">
-        • Patient cleared for anesthesia.<br>
-        • Diabetes flagged — monitor glucose post-op.<br>
-        • No cardiopulmonary risks identified.
+        • Cleared for anesthesia<br>
+        • Monitor glucose post-op<br>
+        • No cardiac risks found
       </p>
     </div>
   </div>
@@ -336,9 +393,9 @@
 
       <h3>AI-Suggested Next Steps</h3>
       <ul class="app-muted">
-        <li>Confirm patient understands their estimated cost.</li>
-        <li>Verify imaging and notes match payer requirements.</li>
-        <li>If rescheduling, ensure PA validity window remains open.</li>
+        <li>Confirm patient understands their estimate.</li>
+        <li>Verify documentation matches payer rules.</li>
+        <li>If rescheduling, check PA validity window.</li>
       </ul>
     </div>
   </div>
@@ -347,7 +404,7 @@
 
 <!-- ------------------------ SCRIPT ------------------------- -->
 <script>
-  // Tab switching logic (fixed & reliable)
+  /* Tab switching */
   const tabs = document.querySelectorAll(".tab");
   const contents = document.querySelectorAll(".tab-content");
 
@@ -361,7 +418,7 @@
     });
   });
 
-  // Query parameters from Architect
+  /* Architect dynamic variables */
   const qp = new URLSearchParams(window.location.search);
 
   const fieldMap = {
@@ -375,23 +432,53 @@
     ptBalance: "balance"
   };
 
-  // Defaults if Architect didn't pass values
   const defaults = {
+    ptDOB: "1984-07-22",
+    ptCase: "PROC-447821",
     ptSurgeryDate: "2025-12-12",
     ptCenter: "Surgery Partners Nashville ASC",
     ptInsurance: "BlueCross PPO",
-    ptBalance: "$450.00"
+    ptBalance: "" /* overwritten by calculator */
   };
 
   Object.keys(fieldMap).forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-
-    const qpValue = qp.get(fieldMap[id]);
-    el.value = qpValue && qpValue.trim() !== "" ? qpValue : defaults[id] || "";
+    const qpVal = qp.get(fieldMap[id]);
+    el.value = qpVal && qpVal.trim() !== "" ? qpVal : defaults[id] || "";
   });
 
-  // Dynamic theming from Architect
+  /* -------- Randomized Estimate Calculator -------- */
+  function randomInRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  const deductible = randomInRange(250, 1500);
+  const coinsurance = randomInRange(50, 600);
+  const copay = randomInRange(25, 100);
+  const total = deductible + coinsurance + copay;
+
+  document.getElementById("ptBalance").value = "$" + total.toFixed(2);
+  document.getElementById("deductibleVal").innerText = "$" + deductible;
+  document.getElementById("coinsuranceVal").innerText = "$" + coinsurance;
+  document.getElementById("copayVal").innerText = "$" + copay;
+  document.getElementById("totalEstimateVal").innerText = "$" + total.toFixed(2);
+
+  /* Expand/Collapse Breakdown Card */
+  function toggleBreakdown() {
+    const card = document.getElementById("breakdownCard");
+    const label = document.querySelector(".toggle-breakdown");
+
+    if (card.style.display === "none" || card.style.display === "") {
+      card.style.display = "block";
+      label.innerText = "▲ Hide Cost Breakdown";
+    } else {
+      card.style.display = "none";
+      label.innerText = "▼ View Cost Breakdown";
+    }
+  }
+
+  /* Dynamic theme overrides from Architect */
   const buttonColor = qp.get("buttonColor");
   const bgColor = qp.get("bgColor");
   const headerColor = qp.get("headerColor");
@@ -399,12 +486,12 @@
   if (bgColor) document.body.style.backgroundColor = bgColor;
 
   if (headerColor) {
-    document.querySelector(".header").style.backgroundColor = headerColor;
+    document.querySelector(".header").style.background = headerColor;
   }
 
   if (buttonColor) {
     document.querySelectorAll(".btn-primary").forEach(btn => {
-      btn.style.backgroundColor = buttonColor;
+      btn.style.background = buttonColor;
     });
   }
 </script>
