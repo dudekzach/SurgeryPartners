@@ -1,234 +1,413 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pre-Surgery Patient Script</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    :root {
-      --header-color: {{HeaderColor}};
-      --button-color: {{ButtonColor}};
-      --background-color: {{PageBackgroundColor}};
-      --container-background: #f1f3f5;
-    }
-    body {
-      background-color: var(--container-background);
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .outer-wrapper {
-      background-color: var(--background-color, #ffffff);
-      border-radius: 1rem;
-      padding: 2rem;
-      max-width: 1000px;
-      margin: auto;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-    }
-    .card {
-      border-radius: 1rem;
-      box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-      margin-bottom: 1rem;
-    }
-    .nav-tabs .nav-link.active {
-      background-color: transparent;
-      color: #0d6efd;
-      border-color: transparent;
-      font-weight: bold;
-    }
-    .btn-primary {
-      background-color: var(--button-color, #0d6efd) !important;
-      border: none;
-      color: white;
-      visibility: visible !important;
-      opacity: 1 !important;
-    }
-    .btn-primary:hover {
-      opacity: 0.9;
-    }
-    .form-check-input:checked {
-      background-color: var(--button-color, #0d6efd) !important;
-      border-color: var(--button-color, #0d6efd) !important;
-    }
-    .form-check-input[type=checkbox] {
-      accent-color: var(--button-color, #0d6efd);
-    }
-    .form-switch .form-check-input:checked {
-      background-color: var(--button-color, #0d6efd) !important;
-      border-color: var(--button-color, #0d6efd) !important;
-    }
-    #toastMessage {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9999;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Surgery Partners – Patient Services Script</title>
+
+<style>
+  :root {
+    --primary: #0056a6;
+    --primary-light: #e8f1fb;
+    --bg: #f4f6f8;
+    --card-bg: #ffffff;
+    --text-main: #1f2d3d;
+    --text-muted: #5f6c7b;
+    --radius: 14px;
+    --shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    font-family: "Segoe UI", sans-serif;
+    color: var(--text-main);
+    padding: 20px 16px;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: auto;
+  }
+
+  .header {
+    background: var(--primary);
+    color: #fff;
+    padding: 16px 24px;
+    border-radius: var(--radius);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 22px;
+    text-align: center;
+  }
+
+  /* -------------------- TABS --------------------- */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    border-bottom: 2px solid #d7e0ea;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 3px solid transparent;
+    transition: color 0.25s ease, border-bottom 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .tab.active {
+    color: var(--primary);
+    border-bottom: 3px solid var(--primary);
+  }
+
+  /* ------------------- CARDS -------------------- */
+  .card {
+    background: var(--card-bg);
+    padding: 22px;
+    margin-bottom: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  h3 {
+    margin-top: 0;
+    color: var(--primary);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  label {
+    display: block;
+    font-size: 0.82rem;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd7e3;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    font-size: 0.92rem;
+    box-sizing: border-box;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 700px) {
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* ---------------- CHECKBOXES ------------------ */
+  .check-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+    font-size: 0.95rem;
+  }
+
+  .check-item input {
+    margin-right: 10px;
+    width: auto;
+    height: 18px;
+  }
+
+  /* ---------------- ACTIONS --------------------- */
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media(max-width:700px){
+    .actions { grid-template-columns: 1fr; }
+  }
+
+  .btn {
+    padding: 14px;
+    border-radius: var(--radius);
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-secondary { background: #e1e6eb; color: var(--text-main); }
+
+  /* ---------------- TIMELINE -------------------- */
+  .timeline {
+    border-left: 3px solid var(--primary);
+    padding-left: 16px;
+  }
+
+  .event { margin-bottom: 16px; }
+  .event .date {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+  .event .type {
+    font-size: 0.75rem;
+    background: var(--primary-light);
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+    display: inline-block;
+    margin: 4px 0;
+    color: var(--primary);
+  }
+  .event .summary { font-size: 0.9rem; color: var(--text-muted); }
+
+  /* ---------------- TABLES ---------------------- */
+  .ehr-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+  }
+
+  .ehr-table td {
+    padding: 8px 6px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #e6eaef;
+  }
+
+  /* -------------- TAB CONTENT ------------------- */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+</style>
 </head>
+
 <body>
-  <div class="outer-wrapper">
-    <div class="container py-4">
-      <ul class="nav nav-tabs mb-3" id="scriptTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#caller" type="button" role="tab">Caller Info</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#checklist" type="button" role="tab">Checklist</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#preferences" type="button" role="tab">Preferences</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#escalation" type="button" role="tab">Escalation</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">Patient History</button>
-        </li>
+<div class="container">
+
+  <div class="header">Surgery Partners – Patient Services Script</div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="context">Patient Context</div>
+    <div class="tab" data-tab="workflow">Workflow</div>
+    <div class="tab" data-tab="preferences">Contact Preferences</div>
+    <div class="tab" data-tab="journey">Patient Journey</div>
+    <div class="tab" data-tab="ehr">EHR Viewer</div>
+    <div class="tab" data-tab="pa">Prior Auth Assistant</div>
+  </div>
+
+  <!-- ---------------- TAB: Patient Context ---------------- -->
+  <div id="context" class="tab-content active">
+    <div class="card">
+      <h3>Patient Context (Auto-populated)</h3>
+
+      <div class="grid-2">
+        <div><label>Patient Name</label><input id="ptName" readonly></div>
+        <div><label>Date of Birth</label><input id="ptDOB" readonly></div>
+
+        <div><label>Phone Number</label><input id="ptPhone" readonly></div>
+        <div><label>Case / Procedure ID</label><input id="ptCase" readonly></div>
+
+        <div><label>Scheduled Surgery Date</label><input id="ptSurgeryDate" readonly></div>
+        <div><label>Center / Facility</label><input id="ptCenter" readonly></div>
+
+        <div><label>Insurance Plan</label><input id="ptInsurance" readonly></div>
+        <div><label>Patient Responsibility Estimate</label><input id="ptBalance" readonly></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------------- TAB: Workflow ---------------- -->
+  <div id="workflow" class="tab-content">
+    <div class="card">
+      <h3>Pre-Service Collection Workflow</h3>
+
+      <div class="check-item"><input type="checkbox"> Verify patient identity (DOB + Phone)</div>
+      <div class="check-item"><input type="checkbox"> Confirm upcoming procedure & facility</div>
+      <div class="check-item"><input type="checkbox"> Review insurance verification status</div>
+      <div class="check-item"><input type="checkbox"> Present patient responsibility estimate</div>
+      <div class="check-item"><input type="checkbox"> Offer payment options (full, partial, plan)</div>
+      <div class="check-item"><input type="checkbox"> Document payment commitment & note in HST</div>
+
+      <div class="actions">
+        <button class="btn btn-primary">Collect Payment</button>
+        <button class="btn btn-primary">Document Interaction</button>
+        <button class="btn btn-secondary">Escalate to Supervisor</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------------- TAB: Contact Preferences ---------------- -->
+  <div id="preferences" class="tab-content">
+    <div class="card">
+      <h3>Patient Contact Preferences</h3>
+
+      <div class="check-item"><input type="checkbox" id="prefSMS"> SMS</div>
+      <div class="check-item"><input type="checkbox" id="prefEmail"> Email</div>
+      <div class="check-item"><input type="checkbox" id="prefVoice"> Voice</div>
+      <div class="check-item"><input type="checkbox" id="prefPlan"> Enrolled in Pre-Op Payment Plan</div>
+    </div>
+  </div>
+
+  <!-- ---------------- TAB: Patient Journey ---------------- -->
+  <div id="journey" class="tab-content">
+    <div class="card">
+      <h3>Patient Journey / Contact History</h3>
+
+      <div class="timeline">
+        <div class="event">
+          <div class="date">Dec 9, 2025</div>
+          <div class="type">Email</div>
+          <div class="summary">Sent pre-op fasting instructions.</div>
+        </div>
+
+        <div class="event">
+          <div class="date">Dec 8, 2025</div>
+          <div class="type">SMS</div>
+          <div class="summary">Reminder sent: “Your procedure is scheduled for Dec 12.”</div>
+        </div>
+
+        <div class="event">
+          <div class="date">Dec 7, 2025</div>
+          <div class="type">Inbound Call</div>
+          <div class="summary">Reviewed checklist, patient paid $150 toward balance.</div>
+        </div>
+
+        <div class="event">
+          <div class="date">Dec 5, 2025</div>
+          <div class="type">Outbound Call</div>
+          <div class="summary">Insurance verification completed, surgery details confirmed.</div>
+        </div>
+
+        <div class="event">
+          <div class="date">Dec 3, 2025</div>
+          <div class="type">Outbound Call</div>
+          <div class="summary">No answer. Voicemail left.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------------- TAB: EHR Viewer ---------------- -->
+  <div id="ehr" class="tab-content">
+    <div class="card">
+      <h3>Mini EHR Viewer (Read-Only)</h3>
+
+      <table class="ehr-table">
+        <tr><td><strong>Primary Diagnosis:</strong></td><td>Cholelithiasis (K80.20)</td></tr>
+        <tr><td><strong>Scheduled Procedure:</strong></td><td>Laparoscopic Cholecystectomy</td></tr>
+        <tr><td><strong>Allergies:</strong></td><td>Penicillin (rash), Latex (contact reaction)</td></tr>
+        <tr><td><strong>Medications:</strong></td><td>Metformin 500mg, Atorvastatin 20mg</td></tr>
+        <tr><td><strong>Past Procedures:</strong></td><td>Colonoscopy – 2022</td></tr>
+        <tr><td><strong>Pre-Op Clearance:</strong></td><td>Completed – PCP on 11/28/25</td></tr>
+        <tr><td><strong>Primary Care Provider:</strong></td><td>Dr. Susan Miller</td></tr>
+      </table>
+
+      <h3>Clinical Notes</h3>
+      <p class="app-muted">
+        • Patient cleared for anesthesia.<br>
+        • Diabetes flagged — monitor glucose post-op.<br>
+        • No cardiopulmonary risks identified.
+      </p>
+    </div>
+  </div>
+
+  <!-- ---------------- TAB: Prior Auth Assistant ---------------- -->
+  <div id="pa" class="tab-content">
+    <div class="card">
+      <h3>Prior Authorization Assistant</h3>
+
+      <table class="ehr-table">
+        <tr><td><strong>PA Status:</strong></td><td>Approved</td></tr>
+        <tr><td><strong>Payer:</strong></td><td>BlueCross PPO</td></tr>
+        <tr><td><strong>Approval #:</strong></td><td>PA-9822341</td></tr>
+        <tr><td><strong>Valid Through:</strong></td><td>02/15/2026</td></tr>
+        <tr><td><strong>Required Docs:</strong></td><td>DX code, imaging results, surgeon notes</td></tr>
+      </table>
+
+      <h3>AI-Suggested Next Steps</h3>
+      <ul class="app-muted">
+        <li>Confirm patient understands their estimated cost.</li>
+        <li>Verify imaging and notes match payer requirements.</li>
+        <li>If rescheduling, ensure PA validity window remains open.</li>
       </ul>
-
-      <div class="tab-content" id="tabContent">
-        <div class="tab-pane fade show active" id="caller" role="tabpanel">
-          <div class="card p-3">
-            <h5>Patient Details</h5>
-            <div class="row g-2">
-              <div class="col-md-6"><strong>Name:</strong> <span id="fname"></span></div>
-              <div class="col-md-6"><strong>Phone:</strong> <span id="phone"></span></div>
-              <div class="col-md-6"><strong>Email:</strong> <span id="email"></span></div>
-              <div class="col-md-6"><strong>Address:</strong> <span id="address"></span></div>
-              <div class="col-md-6"><strong>Patient/Account ID:</strong> <span id="accountId"></span></div>
-              <div class="col-md-6"><strong>Notes/Role:</strong> <span id="notes"></span></div>
-              <div class="col-md-6"><strong>Surgery Date:</strong> <span id="surgeryDate">Dec 18, 2025</span></div>
-              <div class="col-md-6"><strong>Facility:</strong> <span id="facility">Southwest Surgery Center</span></div>
-              <div class="col-md-6"><strong>Insurance:</strong> <span id="insurance">BlueCross PPO</span></div>
-              <div class="col-md-6"><strong>Estimate:</strong> <span id="estimate">$1,150.00</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-pane fade" id="checklist" role="tabpanel">
-          <div class="card p-3">
-            <h5>Pre-Surgery Call Checklist</h5>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="confirmDate">
-              <label class="form-check-label" for="confirmDate">Confirmed surgery date</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="discussEstimate">
-              <label class="form-check-label" for="discussEstimate">Discussed patient financial estimate</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="paymentOptions">
-              <label class="form-check-label" for="paymentOptions">Explained payment options</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-pane fade" id="preferences" role="tabpanel">
-          <div class="card p-3">
-            <h5>Payment & Contact Preferences</h5>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="payPhone">
-              <label class="form-check-label" for="payPhone">Pay over phone</label>
-            </div>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="payOnsite">
-              <label class="form-check-label" for="payOnsite">Pay at surgery center</label>
-            </div>
-            <hr />
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="prefText">
-              <label class="form-check-label" for="prefText">Contact via Text</label>
-            </div>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="prefCall">
-              <label class="form-check-label" for="prefCall">Contact via Call</label>
-            </div>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="prefEmail">
-              <label class="form-check-label" for="prefEmail">Contact via Email</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-pane fade" id="escalation" role="tabpanel">
-          <div class="card p-3 text-center">
-            <h5>Need Help?</h5>
-            <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#escalateModal" id="escalateBtn">{{Button1TEXT}}</button>
-          </div>
-        </div>
-
-        <div class="tab-pane fade" id="history" role="tabpanel">
-          <div class="card p-3">
-            <h5>Patient Journey Summary</h5>
-            <ul>
-              <li><strong>Nov 12, 2025 – Outbound Call:</strong> Pre-surgery estimate discussed via phone</li>
-              <li><strong>Oct 30, 2025 – Email:</strong> Financial responsibility summary sent via Waystar Clarity</li>
-              <li><strong>Oct 28, 2025 – Text:</strong> Surgery date confirmation sent</li>
-              <li><strong>Oct 15, 2025 – Inbound Call:</strong> Patient requested rescheduling due to conflict</li>
-              <li><strong>Sep 02, 2025 – Email:</strong> Eligibility confirmation sent from HST system</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
-  <div class="modal fade" id="escalateModal" tabindex="-1" aria-labelledby="escalateModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="escalateModalLabel">Escalate Case</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <label for="reason" class="form-label">Reason for escalation</label>
-          <select id="reason" class="form-select">
-            <option value="">Select a reason</option>
-            <option value="payment_issue">Payment Issue</option>
-            <option value="patient_request">Patient Requested Supervisor</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="handleEscalationSubmit()">Notify Supervisor</button>
-        </div>
-      </div>
-    </div>
-  </div>
+</div>
 
-  <div class="toast align-items-center text-white bg-success border-0" id="toastMessage" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body">Supervisor Notified.</div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-  </div>
+<!-- ------------------------ SCRIPT ------------------------- -->
+<script>
+  // Tab switching logic (fixed & reliable)
+  const tabs = document.querySelectorAll(".tab");
+  const contents = document.querySelectorAll(".tab-content");
 
-  <script>
-    function getParam(p) {
-      const u = new URL(window.location.href);
-      return u.searchParams.get(p) || '';
-    }
-    document.getElementById("fname").textContent = getParam("NAME");
-    document.getElementById("phone").textContent = getParam("PHONE");
-    document.getElementById("email").textContent = getParam("EMAIL");
-    document.getElementById("address").textContent = getParam("ADDRESS");
-    document.getElementById("accountId").textContent = getParam("AccountPatientOrMemberID");
-    document.getElementById("notes").textContent = getParam("Notes");
-    document.getElementById("insurance").textContent = getParam("INSURANCE") || "BlueCross PPO";
-    document.getElementById("estimate").textContent = getParam("ESTIMATE") || "$1,150.00";
-    document.getElementById("escalateBtn").textContent = getParam("Button1TEXT") || "Notify Supervisor";
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
 
-    function showToast() {
-      const toast = new bootstrap.Toast(document.getElementById('toastMessage'));
-      toast.show();
-    }
+      contents.forEach(c => c.classList.remove("active"));
+      document.getElementById(tab.dataset.tab).classList.add("active");
+    });
+  });
 
-    function handleEscalationSubmit() {
-      const modal = bootstrap.Modal.getInstance(document.getElementById('escalateModal'));
-      modal.hide();
-      showToast();
-    }
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  // Query parameters from Architect
+  const qp = new URLSearchParams(window.location.search);
+
+  const fieldMap = {
+    ptName: "name",
+    ptDOB: "dob",
+    ptPhone: "phone",
+    ptCase: "service",
+    ptSurgeryDate: "surgerydate",
+    ptCenter: "center",
+    ptInsurance: "insurance",
+    ptBalance: "balance"
+  };
+
+  // Defaults if Architect didn't pass values
+  const defaults = {
+    ptSurgeryDate: "2025-12-12",
+    ptCenter: "Surgery Partners Nashville ASC",
+    ptInsurance: "BlueCross PPO",
+    ptBalance: "$450.00"
+  };
+
+  Object.keys(fieldMap).forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    const qpValue = qp.get(fieldMap[id]);
+    el.value = qpValue && qpValue.trim() !== "" ? qpValue : defaults[id] || "";
+  });
+
+  // Dynamic theming from Architect
+  const buttonColor = qp.get("buttonColor");
+  const bgColor = qp.get("bgColor");
+  const headerColor = qp.get("headerColor");
+
+  if (bgColor) document.body.style.backgroundColor = bgColor;
+
+  if (headerColor) {
+    document.querySelector(".header").style.backgroundColor = headerColor;
+  }
+
+  if (buttonColor) {
+    document.querySelectorAll(".btn-primary").forEach(btn => {
+      btn.style.backgroundColor = buttonColor;
+    });
+  }
+</script>
+
 </body>
 </html>
