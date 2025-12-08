@@ -15,6 +15,8 @@
     --text-muted: #5f6c7b;
     --radius: 14px;
     --shadow: 0 4px 14px rgba(0,0,0,0.08);
+    --danger: #e26c6c;
+    --danger-light: #f9e5e5;
   }
 
   body {
@@ -129,11 +131,9 @@
   /* ---------------- ACTION BUTTONS -------------- */
   .actions {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr; /* now only 1 button */
     gap: 14px;
-  }
-  @media(max-width:700px){
-    .actions { grid-template-columns: 1fr; }
+    margin-top: 20px;
   }
 
   .btn {
@@ -145,8 +145,29 @@
     cursor: pointer;
   }
 
-  .btn-primary { background: var(--primary); color: #fff; }
-  .btn-secondary { background: #e1e6eb; color: var(--text-main); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-danger:hover { background: #d45252; }
+
+  /* ---------------- ACTION CARD ---------------- */
+  .supervisor-card {
+    background: var(--danger-light);
+    border-left: 4px solid var(--danger);
+    padding: 14px 16px;
+    margin-top: 8px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    display: none;
+  }
+
+  .supervisor-option {
+    padding: 6px 0;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .supervisor-option:hover {
+    text-decoration: underline;
+  }
 
   /* ---------------- TIMELINE -------------------- */
   .timeline {
@@ -163,11 +184,11 @@
   .event .type {
     font-size: 0.75rem;
     background: var(--primary-light);
-    padding: 3px 8px;
+    padding: 4px 8px;
     border-radius: 999px;
-    font-weight: 600;
     display: inline-block;
     margin: 4px 0;
+    font-weight: 600;
     color: var(--primary);
   }
   .event .summary { font-size: 0.9rem; color: var(--text-muted); }
@@ -215,7 +236,7 @@
     margin-top: -10px;
   }
 
-  /* ---------------- TAB CONTENT ---------------- */
+  /* -------------- TAB CONTENT ------------------- */
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
@@ -236,7 +257,7 @@
     <div class="tab" data-tab="pa">Prior Auth Assistant</div>
   </div>
 
-  <!-- ---------------- TAB: Patient Context ---------------- -->
+  <!-- ---------------- TAB: PATIENT CONTEXT ---------------- -->
   <div id="context" class="tab-content active">
     <div class="card">
       <h3>Patient Context</h3>
@@ -283,7 +304,7 @@
     </div>
   </div>
 
-  <!-- ---------------- TAB: Workflow ---------------- -->
+  <!-- ---------------- TAB: WORKFLOW ---------------- -->
   <div id="workflow" class="tab-content">
     <div class="card">
       <h3>Pre-Service Collection Workflow</h3>
@@ -293,17 +314,22 @@
       <div class="check-item"><input type="checkbox">Review insurance verification status</div>
       <div class="check-item"><input type="checkbox">Present patient responsibility estimate</div>
       <div class="check-item"><input type="checkbox">Offer payment options (full, partial, plan)</div>
-      <div class="check-item"><input type="checkbox">Document payment commitment & note in HST</div>
+      <div class="check-item"><input type="checkbox">Document patient commitment & note in HST</div>
 
       <div class="actions">
-        <button class="btn btn-primary">Collect Payment</button>
-        <button class="btn btn-primary">Document Interaction</button>
-        <button class="btn btn-secondary">Escalate to Supervisor</button>
+        <button class="btn btn-danger" onclick="toggleSupervisorCard()">Escalate to Supervisor</button>
+
+        <div id="supervisorCard" class="supervisor-card">
+          <div class="supervisor-option">Notify Supervisor Immediately</div>
+          <div class="supervisor-option">Request Live Monitoring</div>
+          <div class="supervisor-option">Flag Interaction for Coaching Review</div>
+          <div class="supervisor-option">Transfer Call to Supervisor Queue</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ---------------- TAB: Contact Preferences ---------------- -->
+  <!-- ---------------- TAB: CONTACT PREFERENCES ---------------- -->
   <div id="preferences" class="tab-content">
     <div class="card">
       <h3>Patient Contact Preferences</h3>
@@ -315,7 +341,7 @@
     </div>
   </div>
 
-  <!-- ---------------- TAB: Patient Journey ---------------- -->
+  <!-- ---------------- TAB: PATIENT JOURNEY ---------------- -->
   <div id="journey" class="tab-content">
     <div class="card">
       <h3>Patient Journey / Contact History</h3>
@@ -361,24 +387,17 @@
 
       <table class="ehr-table">
         <tr><td><strong>Primary Diagnosis:</strong></td><td>Cholelithiasis (K80.20)</td></tr>
-        <tr><td><strong>Scheduled Procedure:</strong></td><td>Laparoscopic Cholecystectomy</td></tr>
+        <tr><td><strong>Procedure:</strong></td><td>Laparoscopic Cholecystectomy</td></tr>
         <tr><td><strong>Allergies:</strong></td><td>Penicillin, Latex</td></tr>
         <tr><td><strong>Medications:</strong></td><td>Metformin 500mg, Atorvastatin 20mg</td></tr>
         <tr><td><strong>Past Procedures:</strong></td><td>Colonoscopy – 2022</td></tr>
         <tr><td><strong>Pre-Op Clearance:</strong></td><td>Completed – PCP (11/28/25)</td></tr>
         <tr><td><strong>Primary Care Provider:</strong></td><td>Dr. Susan Miller</td></tr>
       </table>
-
-      <h3>Clinical Notes</h3>
-      <p class="app-muted">
-        • Cleared for anesthesia<br>
-        • Monitor glucose post-op<br>
-        • No cardiac risks found
-      </p>
     </div>
   </div>
 
-  <!-- ---------------- TAB: Prior Auth Assistant ---------------- -->
+  <!-- ---------------- TAB: Prior Auth ---------------- -->
   <div id="pa" class="tab-content">
     <div class="card">
       <h3>Prior Authorization Assistant</h3>
@@ -388,15 +407,8 @@
         <tr><td><strong>Payer:</strong></td><td>BlueCross PPO</td></tr>
         <tr><td><strong>Approval #:</strong></td><td>PA-9822341</td></tr>
         <tr><td><strong>Valid Through:</strong></td><td>02/15/2026</td></tr>
-        <tr><td><strong>Required Docs:</strong></td><td>DX code, imaging results, surgeon notes</td></tr>
+        <tr><td><strong>Required Docs:</strong></td><td>DX code, imaging, surgeon notes</td></tr>
       </table>
-
-      <h3>AI-Suggested Next Steps</h3>
-      <ul class="app-muted">
-        <li>Confirm patient understands their estimate.</li>
-        <li>Verify documentation matches payer rules.</li>
-        <li>If rescheduling, check PA validity window.</li>
-      </ul>
     </div>
   </div>
 
@@ -404,7 +416,7 @@
 
 <!-- ------------------------ SCRIPT ------------------------- -->
 <script>
-  /* ----- Tab Switching ----- */
+  /* ----- Tabs ----- */
   const tabs = document.querySelectorAll(".tab");
   const contents = document.querySelectorAll(".tab-content");
 
@@ -418,63 +430,57 @@
     });
   });
 
-  /* ----- Query Param Reader (Dual Case Support) ----- */
+  /* ----- Dual-Case Query Params ----- */
   const qp = new URLSearchParams(window.location.search);
 
   function getQP(...keys) {
     for (let k of keys) {
-      const val = qp.get(k);
-      if (val && val.trim() !== "") return val;
+      const v = qp.get(k);
+      if (v && v.trim() !== "") return v;
     }
     return "";
   }
+
+  function cleanPhone(input) {
+    return input.replace(/[\[\]\(\)]/g,"").trim();
+  }
+
+  /* ----- Defaults ----- */
+  const defaults = {
+    ptDOB: "1984-07-22",
+    ptCase: "PROC-447821",
+    ptSurgeryDate: "2025-12-19",
+    ptCenter: "NovaMed Surgery Center of Madison",
+    ptInsurance: "BlueCross PPO"
+  };
 
   function setField(id, val) {
     const el = document.getElementById(id);
     if (el) el.value = val;
   }
 
-  /* ----- Field Population with Dual-Case Keys ----- */
-  const defaults = {
-    ptDOB: "1984-07-22",
-    ptCase: "PROC-447821",
-    ptSurgeryDate: "2025-12-12",
-    ptCenter: "Surgery Partners Nashville ASC",
-    ptInsurance: "BlueCross PPO"
-    // ptBalance is calculated dynamically below
-  };
-
-  setField("ptName", 
-    getQP("name","Name","FNAME","fname","FIRSTNAME") + 
-    " " + 
-    getQP("lname","LNAME","lname","LASTNAME")
+  /* ----- Assign Fields ----- */
+  setField("ptName",
+    getQP("name","Name","FNAME","fname") + 
+    " " +
+    getQP("LNAME","lname","last","LastName")
   );
 
-  setField("ptDOB", 
-    getQP("dob","DOB","dateofbirth","birthdate") || defaults.ptDOB
+  setField("ptDOB", getQP("dob","DOB","BirthDate") || defaults.ptDOB);
+
+  setField("ptPhone",
+    cleanPhone(getQP("phone","PHONE","Mobile","ContactNumber"))
   );
 
-  setField("ptPhone", 
-    getQP("phone","PHONE","Mobile","mobile","contact") 
-  );
+  setField("ptCase", getQP("service","CASEID","AccountPatientOrMemberID") || defaults.ptCase);
 
-  setField("ptCase", 
-    getQP("service","ServiceID","CASEID","case","AccountPatientOrMemberID") || defaults.ptCase
-  );
+  setField("ptSurgeryDate", getQP("surgerydate","SURGERYDATE") || defaults.ptSurgeryDate);
 
-  setField("ptSurgeryDate", 
-    getQP("surgerydate","SURGERYDATE") || defaults.ptSurgeryDate
-  );
+  setField("ptCenter", getQP("center","CENTER","facility") || defaults.ptCenter);
 
-  setField("ptCenter", 
-    getQP("center","CENTER","facility","FACILITY") || defaults.ptCenter
-  );
+  setField("ptInsurance", getQP("insurance","INSURANCE","plan") || defaults.ptInsurance);
 
-  setField("ptInsurance", 
-    getQP("insurance","INSURANCE","plan","PLAN") || defaults.ptInsurance
-  );
-
-  /* ----- Randomized Estimate Calculator ----- */
+  /* ----- Randomized Cost Calculator ----- */
   function randomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -490,7 +496,7 @@
   document.getElementById("copayVal").innerText = "$" + copay;
   document.getElementById("totalEstimateVal").innerText = "$" + total.toFixed(2);
 
-  /* Expand/Collapse Breakdown Card */
+  /* ----- Cost Breakdown Toggle ----- */
   function toggleBreakdown() {
     const card = document.getElementById("breakdownCard");
     const label = document.querySelector(".toggle-breakdown");
@@ -505,7 +511,14 @@
   }
   window.toggleBreakdown = toggleBreakdown;
 
-  /* Dynamic Theme Overrides */
+  /* ----- Supervisor Action Card ----- */
+  function toggleSupervisorCard() {
+    const card = document.getElementById("supervisorCard");
+    card.style.display = (card.style.display === "block") ? "none" : "block";
+  }
+  window.toggleSupervisorCard = toggleSupervisorCard;
+
+  /* ----- Theme Overrides from Architect ----- */
   const buttonColor = getQP("buttonColor","ButtonColor");
   const bgColor = getQP("bgColor","PageBackgroundColor");
   const headerColor = getQP("headerColor","HeaderColor");
