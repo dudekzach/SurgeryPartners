@@ -30,13 +30,15 @@
       margin-bottom: 1rem;
     }
     .nav-tabs .nav-link.active {
-      background-color: var(--header-color, #0d6efd);
-      color: white;
-      border-color: var(--header-color, #0d6efd);
+      background-color: transparent;
+      color: #0d6efd;
+      border-color: transparent;
+      font-weight: bold;
     }
     .btn-primary {
       background-color: var(--button-color, #0d6efd);
       border: none;
+      color: white;
     }
     .btn-primary:hover {
       opacity: 0.9;
@@ -45,8 +47,23 @@
       background-color: var(--button-color, #0d6efd);
       border-color: var(--button-color, #0d6efd);
     }
+    .form-check-input:checked + .form-check-label::before {
+      content: "\2713 ";
+      color: green;
+      font-weight: bold;
+    }
     .form-switch .form-check-input {
       cursor: pointer;
+    }
+    .form-check-input:checked[type="checkbox"] {
+      background-color: var(--button-color, #0d6efd);
+      border-color: var(--button-color, #0d6efd);
+    }
+    #toastMessage {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
     }
   </style>
 </head>
@@ -58,7 +75,7 @@
       <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#checklist" type="button" role="tab">Checklist</button></li>
       <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#preferences" type="button" role="tab">Preferences</button></li>
       <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#escalation" type="button" role="tab">Escalation</button></li>
-      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#wrapup" type="button" role="tab">Wrap-Up</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">Patient History</button></li>
     </ul>
 
     <div class="tab-content" id="tabContent">
@@ -101,17 +118,21 @@
       <div class="tab-pane fade" id="escalation" role="tabpanel">
         <div class="card p-3 text-center">
           <h5>Need Help?</h5>
-          <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#escalateModal" id="escalateBtn">{{Button1TEXT}}</button>
+          <button class="btn btn-primary mt-2 d-inline-block" data-bs-toggle="modal" data-bs-target="#escalateModal" id="escalateBtn">{{Button1TEXT}}</button>
         </div>
       </div>
 
-      <!-- Wrap-Up -->
-      <div class="tab-pane fade" id="wrapup" role="tabpanel">
+      <!-- Patient History -->
+      <div class="tab-pane fade" id="history" role="tabpanel">
         <div class="card p-3">
-          <h5>Call Wrap-Up</h5>
-          <div class="mb-3"><label for="callNotes" class="form-label">Call Summary</label><textarea class="form-control" id="callNotes" rows="4"></textarea></div>
-          <button class="btn btn-primary me-2" id="createCaseBtn">{{Button2TEXT}}</button>
-          <button class="btn btn-primary" id="submitBtn">{{Button3TEXT}}</button>
+          <h5>Patient Journey Summary</h5>
+          <ul>
+            <li><strong>Nov 12, 2025 – Outbound Call:</strong> Pre-surgery estimate discussed via phone</li>
+            <li><strong>Oct 30, 2025 – Email:</strong> Financial responsibility summary sent via Waystar Clarity</li>
+            <li><strong>Oct 28, 2025 – Text:</strong> Surgery date confirmation sent</li>
+            <li><strong>Oct 15, 2025 – Inbound Call:</strong> Patient requested rescheduling due to conflict</li>
+            <li><strong>Sep 02, 2025 – Email:</strong> Eligibility confirmation sent from HST system</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -120,21 +141,35 @@
 
 <!-- Escalation Modal -->
 <div class="modal fade" id="escalateModal" tabindex="-1" aria-labelledby="escalateModalLabel" aria-hidden="true">
-  <div class="modal-dialog"><div class="modal-content"><div class="modal-header">
-    <h5 class="modal-title" id="escalateModalLabel">Escalate Case</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-  </div><div class="modal-body">
-    <label for="reason" class="form-label">Reason for escalation</label>
-    <select id="reason" class="form-select">
-      <option value="">Select a reason</option>
-      <option value="payment_issue">Payment Issue</option>
-      <option value="patient_request">Patient Requested Supervisor</option>
-      <option value="other">Other</option>
-    </select>
-  </div><div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary">Notify Supervisor</button>
-  </div></div></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="escalateModalLabel">Escalate Case</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="reason" class="form-label">Reason for escalation</label>
+        <select id="reason" class="form-select">
+          <option value="">Select a reason</option>
+          <option value="payment_issue">Payment Issue</option>
+          <option value="patient_request">Patient Requested Supervisor</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="showToast()">Notify Supervisor</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast align-items-center text-white bg-success border-0" id="toastMessage" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="d-flex">
+    <div class="toast-body">Supervisor Notified.</div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
 </div>
 
 <script>
@@ -150,8 +185,11 @@
   document.getElementById("estimate").textContent = getParam("ESTIMATE");
 
   document.getElementById("escalateBtn").textContent = getParam("Button1TEXT") || "Notify Supervisor";
-  document.getElementById("createCaseBtn").textContent = getParam("Button2TEXT") || "Create Case";
-  document.getElementById("submitBtn").textContent = getParam("Button3TEXT") || "Submit";
+
+  function showToast() {
+    const toast = new bootstrap.Toast(document.getElementById('toastMessage'));
+    toast.show();
+  }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
