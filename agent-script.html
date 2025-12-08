@@ -131,7 +131,7 @@
   /* ---------------- ACTION BUTTONS -------------- */
   .actions {
     display: grid;
-    grid-template-columns: 1fr; /* now only 1 button */
+    grid-template-columns: 1fr;
     gap: 14px;
     margin-top: 20px;
   }
@@ -148,7 +148,7 @@
   .btn-danger { background: var(--danger); color: #fff; }
   .btn-danger:hover { background: #d45252; }
 
-  /* ---------------- ACTION CARD ---------------- */
+  /* ---------------- SUPERVISOR ACTION CARD -------------- */
   .supervisor-card {
     background: var(--danger-light);
     border-left: 4px solid var(--danger);
@@ -174,13 +174,8 @@
     border-left: 3px solid var(--primary);
     padding-left: 16px;
   }
-
   .event { margin-bottom: 16px; }
-  .event .date {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--primary);
-  }
+  .event .date { font-size: 0.8rem; font-weight: 600; color: var(--primary); }
   .event .type {
     font-size: 0.75rem;
     background: var(--primary-light);
@@ -193,20 +188,7 @@
   }
   .event .summary { font-size: 0.9rem; color: var(--text-muted); }
 
-  /* ---------------- TABLES ---------------------- */
-  .ehr-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 16px;
-  }
-
-  .ehr-table td {
-    padding: 8px 6px;
-    font-size: 0.9rem;
-    border-bottom: 1px solid #e6eaef;
-  }
-
-  /* ---------------- COST BREAKDOWN CARD -------- */
+  /* ---------------- COST BREAKDOWN -------------------- */
   .breakdown-card {
     background: #ffffff;
     border-radius: var(--radius);
@@ -215,25 +197,44 @@
     margin-top: 10px;
     display: none;
   }
-
   .breakdown-row {
     display: flex;
     justify-content: space-between;
     padding: 6px 0;
     font-size: 0.9rem;
   }
-
-  .breakdown-divider {
-    border-top: 1px solid #d9dee4;
-    margin: 10px 0;
-  }
-
+  .breakdown-divider { border-top: 1px solid #d9dee4; margin: 10px 0; }
   .toggle-breakdown {
     cursor: pointer;
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--primary);
     margin-top: -10px;
+  }
+
+  /* ---------------- TOASTS -------------------- */
+  .toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 3000;
+  }
+  .toast {
+    background: var(--danger);
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   /* -------------- TAB CONTENT ------------------- */
@@ -244,6 +245,10 @@
 </head>
 
 <body>
+
+<!-- TOASTS -->
+<div class="toast-container" id="toastContainer"></div>
+
 <div class="container">
 
   <div class="header">Surgery Partners – Patient Services Script</div>
@@ -283,19 +288,12 @@
           </div>
 
           <div id="breakdownCard" class="breakdown-card">
-            <div class="breakdown-row">
-              <span>Deductible:</span><span id="deductibleVal">$0</span>
-            </div>
-            <div class="breakdown-row">
-              <span>Coinsurance:</span><span id="coinsuranceVal">$0</span>
-            </div>
-            <div class="breakdown-row">
-              <span>Copay:</span><span id="copayVal">$0</span>
-            </div>
+            <div class="breakdown-row"><span>Deductible:</span><span id="deductibleVal">$0</span></div>
+            <div class="breakdown-row"><span>Coinsurance:</span><span id="coinsuranceVal">$0</span></div>
+            <div class="breakdown-row"><span>Copay:</span><span id="copayVal">$0</span></div>
             <div class="breakdown-divider"></div>
             <div class="breakdown-row">
-              <span><strong>Total Estimate:</strong></span>
-              <span id="totalEstimateVal"><strong>$0</strong></span>
+              <strong>Total Estimate:</strong><strong id="totalEstimateVal">$0</strong>
             </div>
           </div>
         </div>
@@ -347,40 +345,16 @@
       <h3>Patient Journey / Contact History</h3>
 
       <div class="timeline">
-        <div class="event">
-          <div class="date">Dec 9, 2025</div>
-          <div class="type">Email</div>
-          <div class="summary">Sent pre-op fasting instructions.</div>
-        </div>
-
-        <div class="event">
-          <div class="date">Dec 8, 2025</div>
-          <div class="type">SMS</div>
-          <div class="summary">Reminder sent for upcoming procedure.</div>
-        </div>
-
-        <div class="event">
-          <div class="date">Dec 7, 2025</div>
-          <div class="type">Inbound Call</div>
-          <div class="summary">Reviewed checklist and collected $150.</div>
-        </div>
-
-        <div class="event">
-          <div class="date">Dec 5, 2025</div>
-          <div class="type">Outbound Call</div>
-          <div class="summary">Confirmed insurance verification.</div>
-        </div>
-
-        <div class="event">
-          <div class="date">Dec 3, 2025</div>
-          <div class="type">Outbound Call</div>
-          <div class="summary">Unable to reach patient. Voicemail left.</div>
-        </div>
+        <div class="event"><div class="date">Dec 9, 2025</div><div class="type">Email</div><div class="summary">Sent pre-op fasting instructions.</div></div>
+        <div class="event"><div class="date">Dec 8, 2025</div><div class="type">SMS</div><div class="summary">Reminder sent.</div></div>
+        <div class="event"><div class="date">Dec 7, 2025</div><div class="type">Inbound Call</div><div class="summary">Collected $150 & reviewed prep checklist.</div></div>
+        <div class="event"><div class="date">Dec 5, 2025</div><div class="type">Outbound Call</div><div class="summary">Insurance verified & surgery confirmed.</div></div>
+        <div class="event"><div class="date">Dec 3, 2025</div><div class="type">Outbound Call</div><div class="summary">No answer. Voicemail left.</div></div>
       </div>
     </div>
   </div>
 
-  <!-- ---------------- TAB: EHR Viewer ---------------- -->
+  <!-- ---------------- TAB: EHR VIEWER ---------------- -->
   <div id="ehr" class="tab-content">
     <div class="card">
       <h3>Mini EHR Viewer (Read-Only)</h3>
@@ -394,10 +368,11 @@
         <tr><td><strong>Pre-Op Clearance:</strong></td><td>Completed – PCP (11/28/25)</td></tr>
         <tr><td><strong>Primary Care Provider:</strong></td><td>Dr. Susan Miller</td></tr>
       </table>
+
     </div>
   </div>
 
-  <!-- ---------------- TAB: Prior Auth ---------------- -->
+  <!-- ---------------- TAB: PRIOR AUTH ---------------- -->
   <div id="pa" class="tab-content">
     <div class="card">
       <h3>Prior Authorization Assistant</h3>
@@ -407,8 +382,9 @@
         <tr><td><strong>Payer:</strong></td><td>BlueCross PPO</td></tr>
         <tr><td><strong>Approval #:</strong></td><td>PA-9822341</td></tr>
         <tr><td><strong>Valid Through:</strong></td><td>02/15/2026</td></tr>
-        <tr><td><strong>Required Docs:</strong></td><td>DX code, imaging, surgeon notes</td></tr>
+        <tr><td><strong>Required Docs:</strong></td><td>DX code, imaging results, surgeon notes</td></tr>
       </table>
+
     </div>
   </div>
 
@@ -441,7 +417,7 @@
     return "";
   }
 
-  function cleanPhone(input) {
+  function cleanPhone(input="") {
     return input.replace(/[\[\]\(\)]/g,"").trim();
   }
 
@@ -459,25 +435,16 @@
     if (el) el.value = val;
   }
 
-  /* ----- Assign Fields ----- */
+  /* ----- Field Mapping ----- */
   setField("ptName",
-    getQP("name","Name","FNAME","fname") + 
-    " " +
+    getQP("name","Name","FNAME","fname") + " " +
     getQP("LNAME","lname","last","LastName")
   );
-
   setField("ptDOB", getQP("dob","DOB","BirthDate") || defaults.ptDOB);
-
-  setField("ptPhone",
-    cleanPhone(getQP("phone","PHONE","Mobile","ContactNumber"))
-  );
-
+  setField("ptPhone", cleanPhone(getQP("phone","PHONE","Mobile","ContactNumber")));
   setField("ptCase", getQP("service","CASEID","AccountPatientOrMemberID") || defaults.ptCase);
-
   setField("ptSurgeryDate", getQP("surgerydate","SURGERYDATE") || defaults.ptSurgeryDate);
-
   setField("ptCenter", getQP("center","CENTER","facility") || defaults.ptCenter);
-
   setField("ptInsurance", getQP("insurance","INSURANCE","plan") || defaults.ptInsurance);
 
   /* ----- Randomized Cost Calculator ----- */
@@ -511,12 +478,38 @@
   }
   window.toggleBreakdown = toggleBreakdown;
 
-  /* ----- Supervisor Action Card ----- */
+  /* ----- Supervisor Action Card Toggle ----- */
   function toggleSupervisorCard() {
     const card = document.getElementById("supervisorCard");
     card.style.display = (card.style.display === "block") ? "none" : "block";
   }
   window.toggleSupervisorCard = toggleSupervisorCard;
+
+  /* ----- Toast System ----- */
+  function showToast(text) {
+    const container = document.getElementById("toastContainer");
+
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerText = text + " ✓";
+
+    container.appendChild(toast);
+
+    setTimeout(() => toast.classList.add("show"), 10);
+    setTimeout(() => {
+      toast.classList.remove("show");
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
+  /* ----- Supervisor Option Clicks ----- */
+  document.querySelectorAll(".supervisor-option").forEach(option => {
+    option.addEventListener("click", () => {
+      const msg = option.innerText.trim();
+      document.getElementById("supervisorCard").style.display = "none";
+      showToast(msg);
+    });
+  });
 
   /* ----- Theme Overrides from Architect ----- */
   const buttonColor = getQP("buttonColor","ButtonColor");
@@ -524,11 +517,7 @@
   const headerColor = getQP("headerColor","HeaderColor");
 
   if (bgColor) document.body.style.backgroundColor = bgColor;
-
-  if (headerColor) {
-    document.querySelector(".header").style.backgroundColor = headerColor;
-  }
-
+  if (headerColor) document.querySelector(".header").style.backgroundColor = headerColor;
   if (buttonColor) {
     document.querySelectorAll(".btn-primary").forEach(btn => {
       btn.style.backgroundColor = buttonColor;
