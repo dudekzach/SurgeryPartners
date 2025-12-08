@@ -30,7 +30,6 @@
     margin: auto;
   }
 
-  /* HEADER */
   .header {
     background: var(--primary);
     color: #fff;
@@ -47,6 +46,7 @@
     display: flex;
     border-bottom: 2px solid #d7e0ea;
     margin-bottom: 20px;
+    overflow-x: auto;
   }
 
   .tab {
@@ -56,6 +56,7 @@
     font-weight: 600;
     color: var(--text-muted);
     border-bottom: 3px solid transparent;
+    white-space: nowrap;
     margin-right: 24px;
   }
 
@@ -64,7 +65,6 @@
     border-bottom: 3px solid var(--primary);
   }
 
-  /* CARD */
   .card {
     background: var(--card-bg);
     padding: 22px;
@@ -111,7 +111,6 @@
     }
   }
 
-  /* CHECKLIST */
   .check-item {
     display: flex;
     align-items: center;
@@ -124,7 +123,6 @@
     margin-right: 10px;
   }
 
-  /* ACTION BUTTONS */
   .actions {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -189,80 +187,64 @@
     color: var(--text-muted);
   }
 
-  /* HIDE/SHOW TAB CONTENT */
+  /* HIDE/SHOW */
   .tab-content { display: none; }
   .tab-content.active { display: block; }
+
+  /* EHR VIEW TABLE */
+  .ehr-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+  }
+
+  .ehr-table td {
+    padding: 8px 4px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #e6eaef;
+  }
+
 </style>
 </head>
 
 <body>
 <div class="container">
 
-  <!-- HEADER -->
   <div class="header">Surgery Partners – Patient Services Script</div>
 
-  <!-- TAB CONTROLS -->
   <div class="tabs">
     <div class="tab active" data-tab="context">Patient Context</div>
     <div class="tab" data-tab="workflow">Workflow</div>
     <div class="tab" data-tab="preferences">Contact Preferences</div>
     <div class="tab" data-tab="journey">Patient Journey</div>
+    <div class="tab" data-tab="ehr">EHR Viewer</div>
+    <div class="tab" data-tab="pa">Prior Auth Assistant</div>
   </div>
 
-  <!-- TAB: PATIENT CONTEXT -->
+  <!-- PATIENT CONTEXT -->
   <div id="context" class="tab-content active">
     <div class="card">
       <h3>Patient Context (Auto-populated)</h3>
-
       <div class="grid-2">
-        <div>
-          <label>Patient Name</label>
-          <input id="ptName" readonly />
-        </div>
+        <div><label>Patient Name</label><input id="ptName" readonly /></div>
+        <div><label>Date of Birth</label><input id="ptDOB" readonly /></div>
 
-        <div>
-          <label>Date of Birth</label>
-          <input id="ptDOB" readonly />
-        </div>
+        <div><label>Phone Number</label><input id="ptPhone" readonly /></div>
+        <div><label>Case / Procedure ID</label><input id="ptCase" readonly /></div>
 
-        <div>
-          <label>Phone Number</label>
-          <input id="ptPhone" readonly />
-        </div>
+        <div><label>Scheduled Surgery Date</label><input id="ptSurgeryDate" readonly /></div>
+        <div><label>Center / Facility</label><input id="ptCenter" readonly /></div>
 
-        <div>
-          <label>Case / Procedure ID</label>
-          <input id="ptCase" readonly />
-        </div>
-
-        <div>
-          <label>Scheduled Surgery Date</label>
-          <input id="ptSurgeryDate" readonly />
-        </div>
-
-        <div>
-          <label>Center / Facility</label>
-          <input id="ptCenter" readonly />
-        </div>
-
-        <div>
-          <label>Insurance Plan</label>
-          <input id="ptInsurance" readonly />
-        </div>
-
-        <div>
-          <label>Patient Responsibility Estimate</label>
-          <input id="ptBalance" readonly />
-        </div>
+        <div><label>Insurance Plan</label><input id="ptInsurance" readonly /></div>
+        <div><label>Patient Responsibility Estimate</label><input id="ptBalance" readonly /></div>
       </div>
     </div>
   </div>
 
-  <!-- TAB: WORKFLOW -->
+  <!-- WORKFLOW -->
   <div id="workflow" class="tab-content">
     <div class="card">
       <h3>Pre-Service Collection Workflow</h3>
-
       <div class="check-item"><input type="checkbox" /> Verify patient identity (DOB + Phone)</div>
       <div class="check-item"><input type="checkbox" /> Confirm upcoming procedure & facility</div>
       <div class="check-item"><input type="checkbox" /> Review insurance verification status</div>
@@ -278,95 +260,6 @@
     </div>
   </div>
 
-  <!-- TAB: CONTACT PREFERENCES -->
+  <!-- CONTACT PREFERENCES -->
   <div id="preferences" class="tab-content">
-    <div class="card">
-      <h3>Patient Contact Preferences</h3>
-
-      <div class="check-item"><input type="checkbox" id="prefSMS" /> SMS</div>
-      <div class="check-item"><input type="checkbox" id="prefEmail" /> Email</div>
-      <div class="check-item"><input type="checkbox" id="prefVoice" /> Voice</div>
-      <div class="check-item"><input type="checkbox" id="prefPlan" /> Enrolled in Pre-Op Payment Plan</div>
-    </div>
-  </div>
-
-  <!-- TAB: PATIENT JOURNEY -->
-  <div id="journey" class="tab-content">
-    <div class="card">
-      <h3>Patient Journey / Contact History</h3>
-
-      <div class="timeline">
-
-        <div class="event">
-          <div class="date">Dec 9, 2025</div>
-          <div class="type">Email</div>
-          <div class="summary">Sent pre-op fasting instructions.</div>
-        </div>
-
-        <div class="event">
-          <div class="date">Dec 8, 2025</div>
-          <div class="type">SMS</div>
-          <div class="summary">Reminder sent: “Your procedure is scheduled for Dec 12 at 10:00 AM.”</div>
-        </div>
-
-        <div class="event">
-          <div class="date">Dec 7, 2025</div>
-          <div class="type">Inbound Call</div>
-          <div class="summary">Patient paid $150 toward balance. Reviewed pre-op checklist.</div>
-        </div>
-
-        <div class="event">
-          <div class="date">Dec 5, 2025</div>
-          <div class="type">Outbound Call</div>
-          <div class="summary">Connected. Reviewed insurance coverage and confirmed surgery location.</div>
-        </div>
-
-        <div class="event">
-          <div class="date">Dec 3, 2025</div>
-          <div class="type">Outbound Call</div>
-          <div class="summary">No answer. Voicemail left with callback number.</div>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-
-</div>
-
-<script>
-  // Tabs
-  const tabs = document.querySelectorAll(".tab");
-  const contents = document.querySelectorAll(".tab-content");
-
-  tabs.forEach(t => {
-    t.addEventListener("click", () => {
-      tabs.forEach(tab => tab.classList.remove("active"));
-      t.classList.add("active");
-      contents.forEach(c => c.classList.remove("active"));
-      document.getElementById(t.dataset.tab).classList.add("active");
-    });
-  });
-
-  // Auto-fill from Query Params
-  const qp = new URLSearchParams(window.location.search);
-
-  const fieldMap = {
-    ptName: "FNAME",
-    ptDOB: "DOB",
-    ptPhone: "PHONE",
-    ptCase: "CASEID",
-    ptSurgeryDate: "SURGERYDATE",
-    ptCenter: "CENTER",
-    ptInsurance: "INSPLAN",
-    ptBalance: "RESP"
-  };
-
-  Object.keys(fieldMap).forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = qp.get(fieldMap[id]) || "";
-  });
-</script>
-
-</body>
-</html>
+    <d
