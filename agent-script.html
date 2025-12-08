@@ -39,42 +39,22 @@
       background-color: var(--button-color, #0d6efd) !important;
       border: none;
       color: white;
-      visibility: visible;
-      opacity: 1;
+      visibility: visible !important;
+      opacity: 1 !important;
     }
     .btn-primary:hover {
       opacity: 0.9;
     }
     .form-check-input:checked {
-      background-color: var(--button-color, #0d6efd);
-      border-color: var(--button-color, #0d6efd);
+      background-color: var(--button-color, #0d6efd) !important;
+      border-color: var(--button-color, #0d6efd) !important;
     }
     .form-check-input[type=checkbox] {
-      appearance: none;
-      -webkit-appearance: none;
-      background-color: #fff;
-      border: 1px solid #ced4da;
-      width: 1.25em;
-      height: 1.25em;
-      border-radius: 0.25em;
-      position: relative;
-      cursor: pointer;
+      accent-color: var(--button-color, #0d6efd);
     }
-    .form-check-input[type=checkbox]:checked::after {
-      content: "\2713";
-      color: white;
-      font-weight: bold;
-      font-size: 0.9em;
-      position: absolute;
-      top: 0;
-      left: 0.25em;
-    }
-    .form-switch .form-check-input {
-      cursor: pointer;
-    }
-    .form-check-input:checked[type="checkbox"] {
-      background-color: var(--button-color, #0d6efd);
-      border-color: var(--button-color, #0d6efd);
+    .form-switch .form-check-input:checked {
+      background-color: var(--button-color, #0d6efd) !important;
+      border-color: var(--button-color, #0d6efd) !important;
     }
     #toastMessage {
       position: fixed;
@@ -96,7 +76,6 @@
     </ul>
 
     <div class="tab-content" id="tabContent">
-      <!-- Caller Info -->
       <div class="tab-pane fade show active" id="caller" role="tabpanel">
         <div class="card p-3">
           <h5>Patient Details</h5>
@@ -108,7 +87,6 @@
         </div>
       </div>
 
-      <!-- Checklist -->
       <div class="tab-pane fade" id="checklist" role="tabpanel">
         <div class="card p-3">
           <h5>Pre-Surgery Call Checklist</h5>
@@ -118,7 +96,6 @@
         </div>
       </div>
 
-      <!-- Preferences -->
       <div class="tab-pane fade" id="preferences" role="tabpanel">
         <div class="card p-3">
           <h5>Payment & Contact Preferences</h5>
@@ -131,15 +108,13 @@
         </div>
       </div>
 
-      <!-- Escalation -->
       <div class="tab-pane fade" id="escalation" role="tabpanel">
         <div class="card p-3 text-center">
           <h5>Need Help?</h5>
-          <button class="btn btn-primary mt-2 d-inline-block" data-bs-toggle="modal" data-bs-target="#escalateModal" id="escalateBtn">{{Button1TEXT}}</button>
+          <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#escalateModal" id="escalateBtn">{{Button1TEXT}}</button>
         </div>
       </div>
 
-      <!-- Patient History -->
       <div class="tab-pane fade" id="history" role="tabpanel">
         <div class="card p-3">
           <h5>Patient Journey Summary</h5>
@@ -156,7 +131,6 @@
   </div>
 </div>
 
-<!-- Escalation Modal -->
 <div class="modal fade" id="escalateModal" tabindex="-1" aria-labelledby="escalateModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -181,7 +155,6 @@
   </div>
 </div>
 
-<!-- Toast Notification -->
 <div class="toast align-items-center text-white bg-success border-0" id="toastMessage" role="alert" aria-live="assertive" aria-atomic="true">
   <div class="d-flex">
     <div class="toast-body">Supervisor Notified.</div>
