@@ -2,191 +2,265 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pre-Surgery Patient Script</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Surgery Partners – Patient Rep Script</title>
+
   <style>
     :root {
-      --header-color: {{HeaderColor}};
-      --button-color: {{ButtonColor}};
-      --background-color: {{PageBackgroundColor}};
-      --container-background: #f1f3f5;
+      --primary: #0056a6; /* Surgery Partners brand blue */
+      --primary-light: #e8f1fb;
+      --bg: #f4f6f8;
+      --card-bg: #ffffff;
+      --text-main: #1f2d3d;
+      --text-muted: #5f6c7b;
+      --radius: 14px;
+      --shadow: 0 4px 14px rgba(0,0,0,0.08);
     }
+
     body {
-      background-color: var(--container-background);
-      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: var(--bg);
+      font-family: "Segoe UI", sans-serif;
+      color: var(--text-main);
+      padding: 20px;
     }
-    .outer-wrapper {
-      background-color: var(--background-color, #ffffff);
-      border-radius: 1rem;
-      padding: 2rem;
-      max-width: 1000px;
+
+    .container {
+      max-width: 1100px;
       margin: auto;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
     }
+
+    .header {
+      background: var(--primary);
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: var(--radius);
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
     .card {
-      border-radius: 1rem;
-      box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-      margin-bottom: 1rem;
+      background: var(--card-bg);
+      padding: 22px;
+      margin-bottom: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
     }
-    .nav-tabs .nav-link.active {
-      background-color: transparent;
-      color: #0d6efd;
-      border-color: transparent;
-      font-weight: bold;
+
+    h3 {
+      margin-top: 0;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--primary);
     }
-    .btn-primary {
-      background-color: var(--button-color, #0d6efd) !important;
+
+    label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: var(--radius);
+      border: 1px solid #ccd6e0;
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media(max-width: 700px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-right: 6px;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .check-item {
+      margin-bottom: 8px;
+    }
+
+    .actions button {
+      padding: 12px 16px;
       border: none;
-      color: white;
-      visibility: visible !important;
-      opacity: 1 !important;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      cursor: pointer;
+      width: 100%;
+      font-weight: 600;
     }
-    .btn-primary:hover {
-      opacity: 0.9;
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
     }
-    .form-check-input:checked {
-      background-color: var(--button-color, #0d6efd) !important;
-      border-color: var(--button-color, #0d6efd) !important;
+    .btn-secondary {
+      background: #e1e6eb;
+      color: var(--text-main);
     }
-    .form-check-input[type=checkbox] {
-      accent-color: var(--button-color, #0d6efd);
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
     }
-    .form-switch .form-check-input:checked {
-      background-color: var(--button-color, #0d6efd) !important;
-      border-color: var(--button-color, #0d6efd) !important;
-    }
-    #toastMessage {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9999;
+
+    @media(max-width:700px) {
+      .actions {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
-<div class="outer-wrapper">
-  <div class="container py-4">
-    <ul class="nav nav-tabs mb-3" id="scriptTabs" role="tablist">
-      <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#caller" type="button" role="tab">Caller Info</button></li>
-      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#checklist" type="button" role="tab">Checklist</button></li>
-      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#preferences" type="button" role="tab">Preferences</button></li>
-      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#escalation" type="button" role="tab">Escalation</button></li>
-      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">Patient History</button></li>
-    </ul>
+  <div class="container">
 
-    <div class="tab-content" id="tabContent">
-      <div class="tab-pane fade show active" id="caller" role="tabpanel">
-        <div class="card p-3">
-          <h5>Patient Details</h5>
-          <p><strong>Name:</strong> <span id="fname"></span> <span id="lname"></span></p>
-          <p><strong>Phone:</strong> <span id="phone"></span></p>
-          <p><strong>DOB:</strong> <span id="dob"></span></p>
-          <p><strong>Insurance:</strong> <span id="insurance"></span></p>
-          <p><strong>Estimate:</strong> <span id="estimate"></span></p>
+    <!-- HEADER -->
+    <div class="header">
+      Surgery Partners – Pre-Services Patient Representative Script
+    </div>
+
+    <!-- PATIENT CONTEXT PANEL -->
+    <div class="card">
+      <h3>Patient Context (Auto-populated)</h3>
+
+      <div class="grid-2">
+        <div>
+          <label>Patient Name</label>
+          <input id="ptName" readonly />
+        </div>
+
+        <div>
+          <label>Date of Birth</label>
+          <input id="ptDOB" readonly />
+        </div>
+
+        <div>
+          <label>Phone Number</label>
+          <input id="ptPhone" readonly />
+        </div>
+
+        <div>
+          <label>Case / Procedure ID</label>
+          <input id="ptCase" readonly />
+        </div>
+
+        <div>
+          <label>Scheduled Surgery Date</label>
+          <input id="ptSurgeryDate" readonly />
+        </div>
+
+        <div>
+          <label>Center / Facility</label>
+          <input id="ptCenter" readonly />
         </div>
       </div>
 
-      <div class="tab-pane fade" id="checklist" role="tabpanel">
-        <div class="card p-3">
-          <h5>Pre-Surgery Call Checklist</h5>
-          <div class="form-check"><input class="form-check-input" type="checkbox" id="confirmDate"><label class="form-check-label" for="confirmDate">Confirmed surgery date</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" id="discussEstimate"><label class="form-check-label" for="discussEstimate">Discussed patient financial estimate</label></div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" id="paymentOptions"><label class="form-check-label" for="paymentOptions">Explained payment options</label></div>
+      <div class="grid-2">
+        <div>
+          <label>Insurance Plan</label>
+          <input id="ptInsurance" readonly />
         </div>
-      </div>
 
-      <div class="tab-pane fade" id="preferences" role="tabpanel">
-        <div class="card p-3">
-          <h5>Payment & Contact Preferences</h5>
-          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="payPhone"><label class="form-check-label" for="payPhone">Pay over phone</label></div>
-          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="payOnsite"><label class="form-check-label" for="payOnsite">Pay at surgery center</label></div>
-          <hr />
-          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="prefText"><label class="form-check-label" for="prefText">Contact via Text</label></div>
-          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="prefCall"><label class="form-check-label" for="prefCall">Contact via Call</label></div>
-          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="prefEmail"><label class="form-check-label" for="prefEmail">Contact via Email</label></div>
-        </div>
-      </div>
-
-      <div class="tab-pane fade" id="escalation" role="tabpanel">
-        <div class="card p-3 text-center">
-          <h5>Need Help?</h5>
-          <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#escalateModal" id="escalateBtn">{{Button1TEXT}}</button>
-        </div>
-      </div>
-
-      <div class="tab-pane fade" id="history" role="tabpanel">
-        <div class="card p-3">
-          <h5>Patient Journey Summary</h5>
-          <ul>
-            <li><strong>Nov 12, 2025 – Outbound Call:</strong> Pre-surgery estimate discussed via phone</li>
-            <li><strong>Oct 30, 2025 – Email:</strong> Financial responsibility summary sent via Waystar Clarity</li>
-            <li><strong>Oct 28, 2025 – Text:</strong> Surgery date confirmation sent</li>
-            <li><strong>Oct 15, 2025 – Inbound Call:</strong> Patient requested rescheduling due to conflict</li>
-            <li><strong>Sep 02, 2025 – Email:</strong> Eligibility confirmation sent from HST system</li>
-          </ul>
+        <div>
+          <label>Patient Responsibility Estimate</label>
+          <input id="ptBalance" readonly />
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="modal fade" id="escalateModal" tabindex="-1" aria-labelledby="escalateModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="escalateModalLabel">Escalate Case</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <label for="reason" class="form-label">Reason for escalation</label>
-        <select id="reason" class="form-select">
-          <option value="">Select a reason</option>
-          <option value="payment_issue">Payment Issue</option>
-          <option value="patient_request">Patient Requested Supervisor</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="handleEscalationSubmit()">Notify Supervisor</button>
-      </div>
+    <!-- AI COPILOT RECOMMENDATIONS -->
+    <div class="card">
+      <h3>AI Copilot Recommendations</h3>
+      <p class="badge">Next Best Action</p> Verify patient identity → Review estimate → Offer pre-op payment plan  
+      <p class="badge">Knowledge Suggested</p> “Pre-Op Payment Workflow” • “Insurance Eligibility Steps”  
+      <p class="badge">Sentiment</p> Neutral → Improving  
+    </div>
+
+    <!-- WORKFLOW CHECKLIST -->
+    <div class="card">
+      <h3>Pre-Service Collection Workflow</h3>
+
+      <div class="check-item"><input type="checkbox" /> Verify patient identity (DOB + Phone)</div>
+      <div class="check-item"><input type="checkbox" /> Confirm upcoming procedure & facility</div>
+      <div class="check-item"><input type="checkbox" /> Review insurance verification status</div>
+      <div class="check-item"><input type="checkbox" /> Present patient responsibility estimate</div>
+      <div class="check-item"><input type="checkbox" /> Offer payment options (full, partial, plan)</div>
+      <div class="check-item"><input type="checkbox" /> Document payment commitment & note in HST</div>
+    </div>
+
+    <!-- KNOWLEDGE SURFACING SECTION -->
+    <div class="card">
+      <h3>Knowledge Assistant</h3>
+      <p>AI-surfaced answers from Surgery Partners RCM Knowledge:</p>
+
+      <div class="badge">ACH Dispute Workflow</div>
+      <div class="badge">Insurance Eligibility Verification</div>
+      <div class="badge">Pre-Op Payment Policy</div>
+
+      <p style="margin-top:12px; font-size:0.9rem;">
+        These articles are used by both Virtual Agent (to deflect calls) and Agent Copilot (to guide reps in real time).
+      </p>
+    </div>
+
+    <!-- CONTACT PREFERENCES -->
+    <div class="card">
+      <h3>Patient Contact Preferences</h3>
+
+      <div class="check-item"><input type="checkbox" id="prefSMS" /> SMS</div>
+      <div class="check-item"><input type="checkbox" id="prefEmail" /> Email</div>
+      <div class="check-item"><input type="checkbox" id="prefVoice" /> Voice</div>
+      <div class="check-item"><input type="checkbox" id="prefPlan" /> Enrolled in Pre-Op Payment Plan</div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="card actions">
+      <button class="btn-primary">Collect Payment</button>
+      <button class="btn-primary">Document Interaction</button>
+      <button class="btn-secondary">Escalate to Supervisor</button>
     </div>
   </div>
-</div>
 
-<div class="toast align-items-center text-white bg-success border-0" id="toastMessage" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="d-flex">
-    <div class="toast-body">Supervisor Notified.</div>
-    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-  </div>
-</div>
+  <!-- AUTO-POPULATE FROM QUERY PARAMS -->
+  <script>
+    const qp = new URLSearchParams(window.location.search);
 
-<script>
-  function getParam(param) {
-    const url = new URL(window.location.href);
-    return url.searchParams.get(param) || '';
-  }
-  document.getElementById("fname").textContent = getParam("FNAME");
-  document.getElementById("lname").textContent = getParam("LNAME");
-  document.getElementById("phone").textContent = getParam("PHONE").replace('[', '').replace(']', '');
-  document.getElementById("dob").textContent = getParam("DOB");
-  document.getElementById("insurance").textContent = getParam("INSURANCE");
-  document.getElementById("estimate").textContent = getParam("ESTIMATE");
+    const map = {
+      ptName: "FNAME",
+      ptDOB: "DOB",
+      ptPhone: "PHONE",
+      ptCase: "CASEID",
+      ptSurgeryDate: "SURGERYDATE",
+      ptCenter: "CENTER",
+      ptInsurance: "INSPLAN",
+      ptBalance: "RESP"
+    };
 
-  document.getElementById("escalateBtn").textContent = getParam("Button1TEXT") || "Notify Supervisor";
-
-  function showToast() {
-    const toast = new bootstrap.Toast(document.getElementById('toastMessage'));
-    toast.show();
-  }
-
-  function handleEscalationSubmit() {
-    const modal = bootstrap.Modal.getInstance(document.getElementById('escalateModal'));
-    modal.hide();
-    showToast();
-  }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    Object.keys(map).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = qp.get(map[id]) || "";
+    });
+  </script>
 </body>
 </html>
