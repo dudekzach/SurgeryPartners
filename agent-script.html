@@ -10,10 +10,19 @@
       --header-color: {{HeaderColor}};
       --button-color: {{ButtonColor}};
       --background-color: {{PageBackgroundColor}};
+      --container-background: #f1f3f5;
     }
     body {
-      background-color: var(--background-color, #f8f9fa);
+      background-color: var(--container-background);
       font-family: 'Segoe UI', sans-serif;
+    }
+    .outer-wrapper {
+      background-color: var(--background-color, #ffffff);
+      border-radius: 1rem;
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
     }
     .card {
       border-radius: 1rem;
@@ -29,73 +38,81 @@
       background-color: var(--button-color, #0d6efd);
       border: none;
     }
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
     .form-check-input:checked {
       background-color: var(--button-color, #0d6efd);
       border-color: var(--button-color, #0d6efd);
     }
+    .form-switch .form-check-input {
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-<div class="container py-4">
-  <ul class="nav nav-tabs mb-3" id="scriptTabs" role="tablist">
-    <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#caller" type="button" role="tab">Caller Info</button></li>
-    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#checklist" type="button" role="tab">Checklist</button></li>
-    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#preferences" type="button" role="tab">Preferences</button></li>
-    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#escalation" type="button" role="tab">Escalation</button></li>
-    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#wrapup" type="button" role="tab">Wrap-Up</button></li>
-  </ul>
+<div class="outer-wrapper">
+  <div class="container py-4">
+    <ul class="nav nav-tabs mb-3" id="scriptTabs" role="tablist">
+      <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#caller" type="button" role="tab">Caller Info</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#checklist" type="button" role="tab">Checklist</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#preferences" type="button" role="tab">Preferences</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#escalation" type="button" role="tab">Escalation</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#wrapup" type="button" role="tab">Wrap-Up</button></li>
+    </ul>
 
-  <div class="tab-content" id="tabContent">
-    <!-- Caller Info -->
-    <div class="tab-pane fade show active" id="caller" role="tabpanel">
-      <div class="card p-3">
-        <h5>Patient Details</h5>
-        <p><strong>Name:</strong> <span id="fname"></span> <span id="lname"></span></p>
-        <p><strong>Phone:</strong> <span id="phone"></span></p>
-        <p><strong>DOB:</strong> <span id="dob"></span></p>
-        <p><strong>Insurance:</strong> <span id="insurance"></span></p>
-        <p><strong>Estimate:</strong> <span id="estimate"></span></p>
+    <div class="tab-content" id="tabContent">
+      <!-- Caller Info -->
+      <div class="tab-pane fade show active" id="caller" role="tabpanel">
+        <div class="card p-3">
+          <h5>Patient Details</h5>
+          <p><strong>Name:</strong> <span id="fname"></span> <span id="lname"></span></p>
+          <p><strong>Phone:</strong> <span id="phone"></span></p>
+          <p><strong>DOB:</strong> <span id="dob"></span></p>
+          <p><strong>Insurance:</strong> <span id="insurance"></span></p>
+          <p><strong>Estimate:</strong> <span id="estimate"></span></p>
+        </div>
       </div>
-    </div>
 
-    <!-- Checklist -->
-    <div class="tab-pane fade" id="checklist" role="tabpanel">
-      <div class="card p-3">
-        <h5>Pre-Surgery Call Checklist</h5>
-        <div class="form-check"><input class="form-check-input" type="checkbox" id="confirmDate"><label class="form-check-label" for="confirmDate">Confirmed surgery date</label></div>
-        <div class="form-check"><input class="form-check-input" type="checkbox" id="discussEstimate"><label class="form-check-label" for="discussEstimate">Discussed patient financial estimate</label></div>
-        <div class="form-check"><input class="form-check-input" type="checkbox" id="paymentOptions"><label class="form-check-label" for="paymentOptions">Explained payment options</label></div>
+      <!-- Checklist -->
+      <div class="tab-pane fade" id="checklist" role="tabpanel">
+        <div class="card p-3">
+          <h5>Pre-Surgery Call Checklist</h5>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="confirmDate"><label class="form-check-label" for="confirmDate">Confirmed surgery date</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="discussEstimate"><label class="form-check-label" for="discussEstimate">Discussed patient financial estimate</label></div>
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="paymentOptions"><label class="form-check-label" for="paymentOptions">Explained payment options</label></div>
+        </div>
       </div>
-    </div>
 
-    <!-- Preferences -->
-    <div class="tab-pane fade" id="preferences" role="tabpanel">
-      <div class="card p-3">
-        <h5>Payment & Contact Preferences</h5>
-        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="payPhone"><label class="form-check-label" for="payPhone">Pay over phone</label></div>
-        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="payOnsite"><label class="form-check-label" for="payOnsite">Pay at surgery center</label></div>
-        <hr />
-        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="prefText"><label class="form-check-label" for="prefText">Contact via Text</label></div>
-        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="prefCall"><label class="form-check-label" for="prefCall">Contact via Call</label></div>
-        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="prefEmail"><label class="form-check-label" for="prefEmail">Contact via Email</label></div>
+      <!-- Preferences -->
+      <div class="tab-pane fade" id="preferences" role="tabpanel">
+        <div class="card p-3">
+          <h5>Payment & Contact Preferences</h5>
+          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="payPhone"><label class="form-check-label" for="payPhone">Pay over phone</label></div>
+          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="payOnsite"><label class="form-check-label" for="payOnsite">Pay at surgery center</label></div>
+          <hr />
+          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="prefText"><label class="form-check-label" for="prefText">Contact via Text</label></div>
+          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="prefCall"><label class="form-check-label" for="prefCall">Contact via Call</label></div>
+          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="prefEmail"><label class="form-check-label" for="prefEmail">Contact via Email</label></div>
+        </div>
       </div>
-    </div>
 
-    <!-- Escalation -->
-    <div class="tab-pane fade" id="escalation" role="tabpanel">
-      <div class="card p-3 text-center">
-        <h5>Need Help?</h5>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#escalateModal" id="escalateBtn">{{Button1TEXT}}</button>
+      <!-- Escalation -->
+      <div class="tab-pane fade" id="escalation" role="tabpanel">
+        <div class="card p-3 text-center">
+          <h5>Need Help?</h5>
+          <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#escalateModal" id="escalateBtn">{{Button1TEXT}}</button>
+        </div>
       </div>
-    </div>
 
-    <!-- Wrap-Up -->
-    <div class="tab-pane fade" id="wrapup" role="tabpanel">
-      <div class="card p-3">
-        <h5>Call Wrap-Up</h5>
-        <div class="mb-3"><label for="callNotes" class="form-label">Call Summary</label><textarea class="form-control" id="callNotes" rows="4"></textarea></div>
-        <button class="btn btn-primary me-2" id="createCaseBtn">{{Button2TEXT}}</button>
-        <button class="btn btn-primary" id="submitBtn">{{Button3TEXT}}</button>
+      <!-- Wrap-Up -->
+      <div class="tab-pane fade" id="wrapup" role="tabpanel">
+        <div class="card p-3">
+          <h5>Call Wrap-Up</h5>
+          <div class="mb-3"><label for="callNotes" class="form-label">Call Summary</label><textarea class="form-control" id="callNotes" rows="4"></textarea></div>
+          <button class="btn btn-primary me-2" id="createCaseBtn">{{Button2TEXT}}</button>
+          <button class="btn btn-primary" id="submitBtn">{{Button3TEXT}}</button>
+        </div>
       </div>
     </div>
   </div>
@@ -125,10 +142,9 @@
     const url = new URL(window.location.href);
     return url.searchParams.get(param) || '';
   }
-
   document.getElementById("fname").textContent = getParam("FNAME");
   document.getElementById("lname").textContent = getParam("LNAME");
-  document.getElementById("phone").textContent = getParam("PHONE");
+  document.getElementById("phone").textContent = getParam("PHONE").replace('[', '').replace(']', '');
   document.getElementById("dob").textContent = getParam("DOB");
   document.getElementById("insurance").textContent = getParam("INSURANCE");
   document.getElementById("estimate").textContent = getParam("ESTIMATE");
