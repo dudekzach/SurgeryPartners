@@ -404,7 +404,7 @@
 
 <!-- ------------------------ SCRIPT ------------------------- -->
 <script>
-  /* Tab switching */
+  /* ----- Tab Switching ----- */
   const tabs = document.querySelectorAll(".tab");
   const contents = document.querySelectorAll(".tab-content");
 
@@ -418,37 +418,63 @@
     });
   });
 
-  /* Architect dynamic variables */
+  /* ----- Query Param Reader (Dual Case Support) ----- */
   const qp = new URLSearchParams(window.location.search);
 
-  const fieldMap = {
-    ptName: "name",
-    ptDOB: "dob",
-    ptPhone: "phone",
-    ptCase: "service",
-    ptSurgeryDate: "surgerydate",
-    ptCenter: "center",
-    ptInsurance: "insurance",
-    ptBalance: "balance"
-  };
+  function getQP(...keys) {
+    for (let k of keys) {
+      const val = qp.get(k);
+      if (val && val.trim() !== "") return val;
+    }
+    return "";
+  }
 
+  function setField(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  }
+
+  /* ----- Field Population with Dual-Case Keys ----- */
   const defaults = {
     ptDOB: "1984-07-22",
     ptCase: "PROC-447821",
     ptSurgeryDate: "2025-12-12",
     ptCenter: "Surgery Partners Nashville ASC",
-    ptInsurance: "BlueCross PPO",
-    ptBalance: "" /* overwritten by calculator */
+    ptInsurance: "BlueCross PPO"
+    // ptBalance is calculated dynamically below
   };
 
-  Object.keys(fieldMap).forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const qpVal = qp.get(fieldMap[id]);
-    el.value = qpVal && qpVal.trim() !== "" ? qpVal : defaults[id] || "";
-  });
+  setField("ptName", 
+    getQP("name","Name","FNAME","fname","FIRSTNAME") + 
+    " " + 
+    getQP("lname","LNAME","lname","LASTNAME")
+  );
 
-  /* -------- Randomized Estimate Calculator -------- */
+  setField("ptDOB", 
+    getQP("dob","DOB","dateofbirth","birthdate") || defaults.ptDOB
+  );
+
+  setField("ptPhone", 
+    getQP("phone","PHONE","Mobile","mobile","contact") 
+  );
+
+  setField("ptCase", 
+    getQP("service","ServiceID","CASEID","case","AccountPatientOrMemberID") || defaults.ptCase
+  );
+
+  setField("ptSurgeryDate", 
+    getQP("surgerydate","SURGERYDATE") || defaults.ptSurgeryDate
+  );
+
+  setField("ptCenter", 
+    getQP("center","CENTER","facility","FACILITY") || defaults.ptCenter
+  );
+
+  setField("ptInsurance", 
+    getQP("insurance","INSURANCE","plan","PLAN") || defaults.ptInsurance
+  );
+
+  /* ----- Randomized Estimate Calculator ----- */
   function randomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -477,21 +503,22 @@
       label.innerText = "▼ View Cost Breakdown";
     }
   }
+  window.toggleBreakdown = toggleBreakdown;
 
-  /* Dynamic theme overrides from Architect */
-  const buttonColor = qp.get("buttonColor");
-  const bgColor = qp.get("bgColor");
-  const headerColor = qp.get("headerColor");
+  /* Dynamic Theme Overrides */
+  const buttonColor = getQP("buttonColor","ButtonColor");
+  const bgColor = getQP("bgColor","PageBackgroundColor");
+  const headerColor = getQP("headerColor","HeaderColor");
 
   if (bgColor) document.body.style.backgroundColor = bgColor;
 
   if (headerColor) {
-    document.querySelector(".header").style.background = headerColor;
+    document.querySelector(".header").style.backgroundColor = headerColor;
   }
 
   if (buttonColor) {
     document.querySelectorAll(".btn-primary").forEach(btn => {
-      btn.style.background = buttonColor;
+      btn.style.backgroundColor = buttonColor;
     });
   }
 </script>
