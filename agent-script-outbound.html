@@ -9,16 +9,14 @@
   :root {
     --primary: #0056a6;
     --primary-light: #e8f1fb;
-    --bg: #acd8e1; /* Updated background color */
+    --bg: #acd8e1;
     --card-bg: #ffffff;
     --text-main: #1f2d3d;
     --text-muted: #5f6c7b;
     --radius: 14px;
     --shadow: 0 4px 14px rgba(0,0,0,0.08);
     --success: #3fae5b;
-    --success-light: #e6f6ec;
     --danger: #e26c6c;
-    --danger-light: #f9e5e5;
   }
 
   body {
@@ -29,7 +27,7 @@
     padding: 20px 16px;
   }
 
-  .container { max-width: 1100px; margin: auto; }
+  .container { max-width: 1100px; margin: 0 auto; }
 
   .header {
     background: var(--primary);
@@ -62,10 +60,10 @@
   }
   .tab.active {
     color: var(--primary);
-    border-bottom: 3px solid var(--primary);
+    border-bottom-color: var(--primary);
   }
 
-  /* Cards */
+  /* Cards & layout */
   .card {
     background: var(--card-bg);
     padding: 26px;
@@ -106,7 +104,6 @@
     grid-template-columns: 1fr 1fr;
     gap: 18px 24px;
   }
-
   @media (max-width: 700px) {
     .grid-2 { grid-template-columns: 1fr; }
   }
@@ -119,24 +116,36 @@
     font-weight: 600;
   }
 
- .check-item {
+  .checklist {
+    margin-top: 8px;
+  }
+
+  .check-item {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 8px 0;
+    margin: 6px 0;
     font-size: 0.95rem;
     color: var(--text-main);
-}
-.check-item label {
-    cursor: pointer;
-}
+  }
 
-  /* Patient history timeline */
+  .check-item input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+  }
+
+  .check-item label {
+    margin: 0;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  /* Timeline */
   .timeline {
     border-left: 3px solid var(--primary);
     padding-left: 16px;
   }
-
   .event { margin-bottom: 16px; }
   .event .date { font-weight: 600; color: var(--primary); }
   .event .type {
@@ -148,9 +157,12 @@
     margin: 4px 0;
     color: var(--primary);
   }
-  .event .summary { font-size: 0.9rem; color: var(--text-muted); }
+  .event .summary {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
 
-  /* Toast */
+  /* Toasts */
   .toast-container {
     position: fixed;
     top: 20px;
@@ -162,13 +174,18 @@
     color: #fff;
     padding: 12px 18px;
     border-radius: 10px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
     margin-bottom: 10px;
     opacity: 0;
     transform: translateY(-10px);
     transition: 0.3s;
+    font-size: 0.9rem;
+    font-weight: 600;
   }
-  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   .btn-save, .btn-voicemail {
     padding: 12px 16px;
@@ -178,11 +195,16 @@
     cursor: pointer;
     font-weight: 600;
   }
-
-  .btn-save { background: var(--success); color: #fff; }
+  .btn-save {
+    background: var(--success);
+    color: #fff;
+  }
   .btn-save:hover { background: #2f914a; }
 
-  .btn-voicemail { background: var(--danger); color: #fff; }
+  .btn-voicemail {
+    background: var(--danger);
+    color: #fff;
+  }
   .btn-voicemail:hover { background: #c65555; }
 
   .tab-content { display: none; }
@@ -203,24 +225,43 @@
     <div class="tab" data-tab="script">Call Script Assistant</div>
     <div class="tab" data-tab="history">Patient History</div>
     <div class="tab" data-tab="vm">Voicemail Handling</div>
-    <div class="tab" data-tab="dispo">Disposition & Notes</div>
+    <div class="tab" data-tab="dispo">Disposition &amp; Notes</div>
   </div>
 
-  <!-- CALL PREPARATION TAB -->
+  <!-- CALL PREPARATION -->
   <div id="prep" class="tab-content active">
     <div class="card">
       <div class="grid-2">
-        <div><label>Patient Name</label><input id="ptName" readonly /></div>
-        <div><label>Date of Birth</label><input id="ptDOB" readonly /></div>
-
-        <div><label>Phone Number</label><input id="ptPhone" readonly /></div>
-        <div><label>Case / Procedure ID</label><input id="ptCase" readonly /></div>
-
-        <div><label>Scheduled Surgery Date</label><input id="ptSurgeryDate" readonly /></div>
-        <div><label>Center / Facility</label><input id="ptCenter" readonly /></div>
-
-        <div><label>Insurance Plan</label><input id="ptInsurance" readonly /></div>
-        <div><label>Estimated Patient Responsibility</label>
+        <div>
+          <label>Patient Name</label>
+          <input id="ptName" readonly />
+        </div>
+        <div>
+          <label>Date of Birth</label>
+          <input id="ptDOB" readonly />
+        </div>
+        <div>
+          <label>Phone Number</label>
+          <input id="ptPhone" readonly />
+        </div>
+        <div>
+          <label>Case / Procedure ID</label>
+          <input id="ptCase" readonly />
+        </div>
+        <div>
+          <label>Scheduled Surgery Date</label>
+          <input id="ptSurgeryDate" readonly />
+        </div>
+        <div>
+          <label>Center / Facility</label>
+          <input id="ptCenter" readonly />
+        </div>
+        <div>
+          <label>Insurance Plan</label>
+          <input id="ptInsurance" readonly />
+        </div>
+        <div>
+          <label>Estimated Patient Responsibility</label>
           <input id="ptBalance" readonly />
         </div>
       </div>
@@ -234,35 +275,34 @@
       <p id="aiScript" style="font-size:0.95rem; line-height:1.5;"></p>
 
       <div class="check-section-title">Identity Verification</div>
+      <div class="checklist">
+        <div class="check-item">
+          <input type="checkbox" id="verifyIdentity" />
+          <label for="verifyIdentity">Verify patient identity</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="confirmDate" />
+          <label for="confirmDate">Confirm date &amp; location</label>
+        </div>
+      </div>
 
-<div class="check-item">
-  <input type="checkbox" id="verifyIdentity">
-  <label for="verifyIdentity">Verify patient identity</label>
-</div>
-
-<div class="check-item">
-  <input type="checkbox" id="confirmDate">
-  <label for="confirmDate">Confirm date & location</label>
-</div>
-
-
-<div class="check-section-title">Financial Readiness</div>
-
-<div class="check-item">
-  <input type="checkbox" id="reviewInsurance">
-  <label for="reviewInsurance">Review insurance details</label>
-</div>
-
-<div class="check-item">
-  <input type="checkbox" id="discussEstimate">
-  <label for="discussEstimate">Discuss estimate</label>
-</div>
-
-<div class="check-item">
-  <input type="checkbox" id="offerPayment">
-  <label for="offerPayment">Offer payment options</label>
-</div>
-
+      <div class="check-section-title">Financial Readiness</div>
+      <div class="checklist">
+        <div class="check-item">
+          <input type="checkbox" id="reviewInsurance" />
+          <label for="reviewInsurance">Review insurance details</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="discussEstimate" />
+          <label for="discussEstimate">Discuss estimate</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="offerPayment" />
+          <label for="offerPayment">Offer payment options</label>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- PATIENT HISTORY -->
   <div id="history" class="tab-content">
@@ -275,18 +315,16 @@
   <!-- VOICEMAIL HANDLING -->
   <div id="vm" class="tab-content">
     <div class="card">
-
       <button class="btn-voicemail" onclick="triggerVoicemail()">Send to Voicemail Flow</button>
-
       <p style="font-size:0.9rem; margin-top:14px; color:var(--text-muted);">
-        This simulates Genesys Cloud’s Answering Machine Detection routing the call  
+        This simulates Genesys Cloud’s Answering Machine Detection routing the call
         into your pre-recorded Surgery Partners voicemail flow.
       </p>
 
       <h4>Pre-Recorded Message Preview</h4>
       <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.5;">
-        “Hello, this is Surgery Partners calling about your upcoming procedure.  
-        Please return our call at your earliest convenience so we can review  
+        “Hello, this is Surgery Partners calling about your upcoming procedure.
+        Please return our call at your earliest convenience so we can review
         your pre-operative instructions and your estimated out-of-pocket cost.”
       </p>
     </div>
@@ -295,7 +333,7 @@
   <!-- DISPOSITION -->
   <div id="dispo" class="tab-content">
     <div class="card">
-      <h3>Disposition & Notes</h3>
+      <h3>Disposition &amp; Notes</h3>
 
       <label>Was Contact Made?</label>
       <select id="contactMade">
@@ -327,18 +365,19 @@
 
 </div>
 
-
 <script>
-  /* TOAST */
+  /* Toast helpers */
   function showToast(text) {
-    const box = document.getElementById("toastContainer");
+    const container = document.getElementById("toastContainer");
     const toast = document.createElement("div");
     toast.className = "toast";
     toast.innerText = text + " ✓";
-    box.appendChild(toast);
+    container.appendChild(toast);
 
-    setTimeout(() => toast.classList.add("show"), 10);
-    setTimeout(() => { toast.classList.remove("show");
+    requestAnimationFrame(() => toast.classList.add("show"));
+
+    setTimeout(() => {
+      toast.classList.remove("show");
       setTimeout(() => toast.remove(), 300);
     }, 3000);
   }
@@ -346,18 +385,20 @@
   function saveDispo() { showToast("Disposition Saved"); }
   function triggerVoicemail() { showToast("Voicemail Flow Triggered"); }
 
-  /* TABS */
-  document.querySelectorAll(".tab").forEach(tab => {
-    tab.addEventListener("click", () => {
-      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-      document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+  /* Tabs */
+  const tabs = document.querySelectorAll(".tab");
+  const contents = document.querySelectorAll(".tab-content");
 
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      contents.forEach(c => c.classList.remove("active"));
       tab.classList.add("active");
       document.getElementById(tab.dataset.tab).classList.add("active");
     });
   });
 
-  /* PATIENT ROTATION */
+  /* Patient rotation */
   const patients = [
     {
       name: "Cameron Loyal",
@@ -425,9 +466,9 @@
     Do you have a moment to go over this together?
   `.trim();
 
-  const historyBox = document.getElementById("historyTimeline");
+  const historyTimeline = document.getElementById("historyTimeline");
   p.history.forEach(h => {
-    historyBox.innerHTML += `
+    historyTimeline.innerHTML += `
       <div class="event">
         <div class="date">${h.date}</div>
         <div class="type">${h.type}</div>
