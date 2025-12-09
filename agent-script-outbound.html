@@ -119,14 +119,17 @@
     font-weight: 600;
   }
 
-  .check-item {
+ .check-item {
     display: flex;
     align-items: center;
     gap: 10px;
+    margin: 8px 0;
     font-size: 0.95rem;
-    margin: 10px 0;
-    padding-left: 4px;
-  }
+    color: var(--text-main);
+}
+.check-item label {
+    cursor: pointer;
+}
 
   /* Patient history timeline */
   .timeline {
@@ -231,15 +234,35 @@
       <p id="aiScript" style="font-size:0.95rem; line-height:1.5;"></p>
 
       <div class="check-section-title">Identity Verification</div>
-      <div class="check-item"><input type="checkbox">Verify patient identity</div>
-      <div class="check-item"><input type="checkbox">Confirm date & location</div>
 
-      <div class="check-section-title">Financial Readiness</div>
-      <div class="check-item"><input type="checkbox">Review insurance details</div>
-      <div class="check-item"><input type="checkbox">Discuss estimate</div>
-      <div class="check-item"><input type="checkbox">Offer payment options</div>
-    </div>
-  </div>
+<div class="check-item">
+  <input type="checkbox" id="verifyIdentity">
+  <label for="verifyIdentity">Verify patient identity</label>
+</div>
+
+<div class="check-item">
+  <input type="checkbox" id="confirmDate">
+  <label for="confirmDate">Confirm date & location</label>
+</div>
+
+
+<div class="check-section-title">Financial Readiness</div>
+
+<div class="check-item">
+  <input type="checkbox" id="reviewInsurance">
+  <label for="reviewInsurance">Review insurance details</label>
+</div>
+
+<div class="check-item">
+  <input type="checkbox" id="discussEstimate">
+  <label for="discussEstimate">Discuss estimate</label>
+</div>
+
+<div class="check-item">
+  <input type="checkbox" id="offerPayment">
+  <label for="offerPayment">Offer payment options</label>
+</div>
+
 
   <!-- PATIENT HISTORY -->
   <div id="history" class="tab-content">
