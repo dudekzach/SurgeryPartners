@@ -29,10 +29,7 @@
     padding: 20px 16px;
   }
 
-  .container {
-    max-width: 1100px;
-    margin: auto;
-  }
+  .container { max-width: 1100px; margin: auto; }
 
   .header {
     background: var(--primary);
@@ -71,20 +68,21 @@
   /* Cards */
   .card {
     background: var(--card-bg);
-    padding: 22px;
-    margin-bottom: 20px;
+    padding: 26px;
+    margin-bottom: 22px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
   }
+
   h3 {
     margin-top: 0;
     color: var(--primary);
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 600;
   }
 
   label {
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
     font-weight: 600;
     margin-bottom: 6px;
@@ -98,6 +96,7 @@
     border-radius: var(--radius);
     margin-bottom: 16px;
     font-size: 0.92rem;
+    box-sizing: border-box;
   }
 
   textarea { resize: vertical; height: 90px; }
@@ -105,10 +104,19 @@
   .grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    gap: 18px 24px;
   }
-  @media (max-width:700px) {
+
+  @media (max-width: 700px) {
     .grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* Checklist */
+  .check-section-title {
+    margin-top: 22px;
+    font-size: 1.05rem;
+    color: var(--primary);
+    font-weight: 600;
   }
 
   .check-item {
@@ -116,27 +124,30 @@
     align-items: center;
     gap: 10px;
     font-size: 0.95rem;
-    margin-bottom: 14px;
+    margin: 10px 0;
+    padding-left: 4px;
   }
 
+  /* Patient history timeline */
   .timeline {
     border-left: 3px solid var(--primary);
     padding-left: 16px;
   }
+
   .event { margin-bottom: 16px; }
-  .event .date { font-weight: 600; color: var(--primary); font-size: 0.8rem; }
+  .event .date { font-weight: 600; color: var(--primary); }
   .event .type {
     background: var(--primary-light);
-    padding: 4px 8px;
+    padding: 3px 8px;
     border-radius: 999px;
     font-size: 0.75rem;
-    margin: 4px 0;
     display: inline-block;
+    margin: 4px 0;
     color: var(--primary);
   }
   .event .summary { font-size: 0.9rem; color: var(--text-muted); }
 
-  /* Toasts */
+  /* Toast */
   .toast-container {
     position: fixed;
     top: 20px;
@@ -153,38 +164,29 @@
     opacity: 0;
     transform: translateY(-10px);
     transition: 0.3s;
-    font-size: 0.9rem;
-    font-weight: 600;
   }
   .toast.show { opacity: 1; transform: translateY(0); }
 
-  .btn-save {
-    background: var(--success);
-    color: #fff;
-    padding: 12px;
+  .btn-save, .btn-voicemail {
+    padding: 12px 16px;
     border-radius: var(--radius);
     border: none;
     font-size: 0.95rem;
     cursor: pointer;
+    font-weight: 600;
   }
+
+  .btn-save { background: var(--success); color: #fff; }
   .btn-save:hover { background: #2f914a; }
 
-  .btn-voicemail {
-    background: var(--danger);
-    color: #fff;
-    padding: 12px;
-    border-radius: var(--radius);
-    border: none;
-    font-size: 0.95rem;
-    cursor: pointer;
-    margin-bottom: 10px;
-  }
+  .btn-voicemail { background: var(--danger); color: #fff; }
   .btn-voicemail:hover { background: #c65555; }
 
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 </style>
 </head>
+
 <body>
 
 <div class="toast-container" id="toastContainer"></div>
@@ -201,11 +203,9 @@
     <div class="tab" data-tab="dispo">Disposition & Notes</div>
   </div>
 
-  <!-- CALL PREPARATION -->
+  <!-- CALL PREPARATION TAB -->
   <div id="prep" class="tab-content active">
     <div class="card">
-      <h3>Call Preparation</h3>
-
       <div class="grid-2">
         <div><label>Patient Name</label><input id="ptName" readonly /></div>
         <div><label>Date of Birth</label><input id="ptDOB" readonly /></div>
@@ -217,21 +217,10 @@
         <div><label>Center / Facility</label><input id="ptCenter" readonly /></div>
 
         <div><label>Insurance Plan</label><input id="ptInsurance" readonly /></div>
-
-        <div>
-          <label>Estimated Patient Responsibility</label>
+        <div><label>Estimated Patient Responsibility</label>
           <input id="ptBalance" readonly />
         </div>
       </div>
-
-      <h3>Outbound Readiness Checklist</h3>
-
-      <div class="check-item"><input type="checkbox">Verify patient identity</div>
-      <div class="check-item"><input type="checkbox">Confirm date & location</div>
-      <div class="check-item"><input type="checkbox">Review insurance details</div>
-      <div class="check-item"><input type="checkbox">Discuss estimate</div>
-      <div class="check-item"><input type="checkbox">Offer payment options</div>
-
     </div>
   </div>
 
@@ -239,7 +228,16 @@
   <div id="script" class="tab-content">
     <div class="card">
       <h3>Talking Points for Today’s Call</h3>
-      <p id="aiScript" style="font-size:0.92rem; line-height:1.45;"></p>
+      <p id="aiScript" style="font-size:0.95rem; line-height:1.5;"></p>
+
+      <div class="check-section-title">Identity Verification</div>
+      <div class="check-item"><input type="checkbox">Verify patient identity</div>
+      <div class="check-item"><input type="checkbox">Confirm date & location</div>
+
+      <div class="check-section-title">Financial Readiness</div>
+      <div class="check-item"><input type="checkbox">Review insurance details</div>
+      <div class="check-item"><input type="checkbox">Discuss estimate</div>
+      <div class="check-item"><input type="checkbox">Offer payment options</div>
     </div>
   </div>
 
@@ -254,18 +252,19 @@
   <!-- VOICEMAIL HANDLING -->
   <div id="vm" class="tab-content">
     <div class="card">
+
       <button class="btn-voicemail" onclick="triggerVoicemail()">Send to Voicemail Flow</button>
 
-      <p style="font-size:0.9rem; color:var(--text-muted); margin-top:12px;">
-        This simulates Genesys Cloud’s Answering Machine Detection (AMD) routing the call  
-        into an automated pre-recorded message flow.
+      <p style="font-size:0.9rem; margin-top:14px; color:var(--text-muted);">
+        This simulates Genesys Cloud’s Answering Machine Detection routing the call  
+        into your pre-recorded Surgery Partners voicemail flow.
       </p>
 
       <h4>Pre-Recorded Message Preview</h4>
-      <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.45;">
+      <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.5;">
         “Hello, this is Surgery Partners calling about your upcoming procedure.  
-        Please return our call at your earliest convenience so we can review pre-operative instructions  
-        and your estimated out-of-pocket cost.”
+        Please return our call at your earliest convenience so we can review  
+        your pre-operative instructions and your estimated out-of-pocket cost.”
       </p>
     </div>
   </div>
@@ -305,38 +304,30 @@
 
 </div>
 
+
 <script>
-  /* TOAST NOTIFICATIONS */
+  /* TOAST */
   function showToast(text) {
-    const container = document.getElementById("toastContainer");
+    const box = document.getElementById("toastContainer");
     const toast = document.createElement("div");
     toast.className = "toast";
     toast.innerText = text + " ✓";
-    container.appendChild(toast);
+    box.appendChild(toast);
 
     setTimeout(() => toast.classList.add("show"), 10);
-    setTimeout(() => {
-      toast.classList.remove("show");
+    setTimeout(() => { toast.classList.remove("show");
       setTimeout(() => toast.remove(), 300);
     }, 3000);
   }
 
-  function saveDispo() {
-    showToast("Disposition Saved");
-  }
+  function saveDispo() { showToast("Disposition Saved"); }
+  function triggerVoicemail() { showToast("Voicemail Flow Triggered"); }
 
-  function triggerVoicemail() {
-    showToast("Voicemail Flow Triggered");
-  }
-
-  /* TAB LOGIC */
-  const tabs = document.querySelectorAll(".tab");
-  const contents = document.querySelectorAll(".tab-content");
-
-  tabs.forEach(tab => {
+  /* TABS */
+  document.querySelectorAll(".tab").forEach(tab => {
     tab.addEventListener("click", () => {
-      tabs.forEach(t => t.classList.remove("active"));
-      contents.forEach(c => c.classList.remove("active"));
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
 
       tab.classList.add("active");
       document.getElementById(tab.dataset.tab).classList.add("active");
@@ -392,30 +383,27 @@
     }
   ];
 
-  const patient = patients[Math.floor(Math.random() * patients.length)];
+  const p = patients[Math.floor(Math.random() * patients.length)];
 
-  /* Populate fields */
-  document.getElementById("ptName").value = patient.name;
-  document.getElementById("ptDOB").value = patient.dob;
-  document.getElementById("ptPhone").value = patient.phone;
-  document.getElementById("ptCase").value = patient.caseId;
-  document.getElementById("ptSurgeryDate").value = patient.surgeryDate;
-  document.getElementById("ptCenter").value = patient.center;
-  document.getElementById("ptInsurance").value = patient.insurance;
-  document.getElementById("ptBalance").value = "$" + parseFloat(patient.estimate).toFixed(2);
+  document.getElementById("ptName").value = p.name;
+  document.getElementById("ptDOB").value = p.dob;
+  document.getElementById("ptPhone").value = p.phone;
+  document.getElementById("ptCase").value = p.caseId;
+  document.getElementById("ptSurgeryDate").value = p.surgeryDate;
+  document.getElementById("ptCenter").value = p.center;
+  document.getElementById("ptInsurance").value = p.insurance;
+  document.getElementById("ptBalance").value = "$" + parseFloat(p.estimate).toFixed(2);
 
-  /* AI Call Script */
   document.getElementById("aiScript").innerText = `
-    Hi ${patient.name.split(" ")[0]}, this is a Patient Representative from Surgery Partners.
-    I’m calling regarding your upcoming procedure scheduled for ${patient.surgeryDate}.
-    I’d like to review your insurance information and your estimated out-of-pocket cost of $${patient.estimate}.
+    Hi ${p.name.split(" ")[0]}, this is a Patient Representative from Surgery Partners.
+    I’m calling regarding your upcoming procedure scheduled for ${p.surgeryDate}.
+    I’d like to review your insurance information and your estimated out-of-pocket cost of $${p.estimate}.
     I can also assist with taking care of that amount today if you'd like to handle it ahead of time.
     Do you have a moment to go over this together?
   `.trim();
 
-  /* History */
   const historyBox = document.getElementById("historyTimeline");
-  patient.history.forEach(h => {
+  p.history.forEach(h => {
     historyBox.innerHTML += `
       <div class="event">
         <div class="date">${h.date}</div>
@@ -424,7 +412,6 @@
       </div>
     `;
   });
-
 </script>
 
 </body>
