@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Surgery Partners – Outbound Patient Services Script</title>
+
+<style>
+  :root {
+    --primary: #0056a6;
+    --primary-light: #e8f1fb;
+    --bg: #f4f6f8;
+    --card-bg: #ffffff;
+    --text-main: #1f2d3d;
+    --text-muted: #5f6c7b;
+    --radius: 14px;
+    --shadow: 0 4px 14px rgba(0,0,0,0.08);
+    --success: #3fae5b;
+    --success-light: #e6f6ec;
+    --danger: #e26c6c;
+    --danger-light: #f9e5e5;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    font-family: "Segoe UI", sans-serif;
+    color: var(--text-main);
+    padding: 20px 16px;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: auto;
+  }
+
+  .header {
+    background: var(--primary);
+    color: #fff;
+    padding: 16px 24px;
+    border-radius: var(--radius);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 22px;
+    text-align: center;
+  }
+
+  /* -------------------- TABS --------------------- */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    border-bottom: 2px solid #d7e0ea;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 3px solid transparent;
+    transition: color 0.25s ease, border-bottom 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .tab.active {
+    color: var(--primary);
+    border-bottom: 3px solid var(--primary);
+  }
+
+  /* ------------------- CARDS -------------------- */
+  .card {
+    background: var(--card-bg);
+    padding: 22px;
+    margin-bottom: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  h3 {
+    margin-top: 0;
+    color: var(--primary);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  label {
+    display: block;
+    font-size: 0.82rem;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd7e3;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    font-size: 0.92rem;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    resize: vertical;
+    height: 90px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 700px) {
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* ---------------- CHECKBOXES ------------------ */
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    font-size: 0.95rem;
+  }
+
+  .check-item input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+  }
+
+  /* ---------------- TIMELINE -------------------- */
+  .timeline {
+    border-left: 3px solid var(--primary);
+    padding-left: 16px;
+  }
+  .event { margin-bottom: 16px; }
+  .event .date { font-size: 0.8rem; font-weight: 600; color: var(--primary); }
+  .event .type {
+    font-size: 0.75rem;
+    background: var(--primary-light);
+    padding: 4px 8px;
+    border-radius: 999px;
+    display: inline-block;
+    margin: 4px 0;
+    font-weight: 600;
+    color: var(--primary);
+  }
+  .event .summary { font-size: 0.9rem; color: var(--text-muted); }
+
+  /* ---------------- TOASTS -------------------- */
+  .toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 3000;
+  }
+  .toast {
+    background: var(--success);
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* -------------- TAB CONTENT ------------------- */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+</style>
+</head>
+
+<body>
+
+<!-- TOASTS -->
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="container">
+
+  <div class="header">Surgery Partners – Outbound Patient Services Script</div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="prep">Call Preparation</div>
+    <div class="tab" data-tab="script">Call Script Assistant</div>
+    <div class="tab" data-tab="history">Patient History</div>
+    <div class="tab" data-tab="vm">Voicemail Handling</div>
+    <div class="tab" data-tab="dispo">Disposition & Notes</div>
+  </div>
+
+  <!-- ---------------- TAB 1: CALL PREPARATION ---------------- -->
+  <div id="prep" class="tab-content active">
+    <div class="card">
+      <h3>Call Preparation</h3>
+
+      <div class="grid-2">
+        <div><label>Patient Name</label><input id="ptName" readonly></div>
+        <div><label>Date of Birth</label><input id="ptDOB" readonly></div>
+
+        <div><label>Phone Number</label><input id="ptPhone" readonly></div>
+        <div><label>Case / Procedure ID</label><input id="ptCase" readonly></div>
+
+        <div><label>Scheduled Surgery Date</label><input id="ptSurgeryDate" readonly></div>
+        <div><label>Center / Facility</label><input id="ptCenter" readonly></div>
+
+        <div><label>Insurance Plan</label><input id="ptInsurance" readonly></div>
+
+        <div>
+          <label>Estimated Patient Responsibility</label>
+          <input id="ptBalance" readonly />
+        </div>
+      </div>
+
+      <h3>Outbound Readiness Checklist</h3>
+
+      <div class="check-item"><input type="checkbox">Verify patient identity (DOB + Phone)</div>
+      <div class="check-item"><input type="checkbox">Confirm procedure date & location</div>
+      <div class="check-item"><input type="checkbox">Confirm insurance information</div>
+      <div class="check-item"><input type="checkbox">Discuss financial estimate</div>
+      <div class="check-item"><input type="checkbox">Offer payment options (full, partial, plan)</div>
+
+    </div>
+  </div>
+
+  <!-- ---------------- TAB 2: CALL SCRIPT ASSISTANT ---------------- -->
+  <div id="script" class="tab-content">
+    <div class="card">
+      <h3>Call Script Assistant</h3>
+
+      <h4>Dynamic AI Generated Script</h4>
+      <p id="aiScript" style="font-size:0.92rem; color:var(--text-main); line-height:1.45;"></p>
+
+      <h4>Standard Script (Fallback)</h4>
+      <p style="font-size:0.92rem; color:var(--text-muted); line-height:1.45;">
+        Hello, this is a Patient Representative calling from Surgery Partners regarding your upcoming procedure.
+        I want to review your surgery details, answer any questions you may have, and help you prepare for your visit.
+        We also have an estimated out-of-pocket cost available if you'd like to take care of that ahead of time.
+        Is now an okay time to speak for a moment?
+      </p>
+
+    </div>
+  </div>
+
+  <!-- ---------------- TAB 3: PATIENT HISTORY ---------------- -->
+  <div id="history" class="tab-content">
+    <div class="card">
+      <h3>Patient Contact History</h3>
+
+      <div class="timeline">
+        <div class="event"><div class="date">Dec 10, 2025</div><div class="type">Outbound Call</div><div class="summary">No answer. Local presence voicemail unavailable.</div></div>
+        <div class="event"><div class="date">Dec 9, 2025</div><div class="type">SMS</div><div class="summary">Reminder sent for upcoming procedure.</div></div>
+        <div class="event"><div class="date">Dec 7, 2025</div><div class="type">Email</div><div class="summary">Sent pre-op fasting instructions.</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ---------------- TAB 4: VOICEMAIL HANDLING ---------------- -->
+  <div id="vm" class="tab-content">
+    <div class="card">
+      <h3>Voicemail Handling</h3>
+
+      <div style="background:var(--primary-light); padding:14px; border-radius:10px; margin-bottom:16px;">
+        <strong>ℹ️ Voicemail Detected</strong><br>
+        Genesys Cloud Outbound Routing has detected an answering machine.
+        A pre-recorded Surgery Partners message is being delivered automatically.
+      </div>
+
+      <h4>Pre-Recorded Message Preview</h4>
+      <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.45;">
+        “Hello, this is Surgery Partners calling about your upcoming procedure.
+        Please return our call at your earliest convenience so we can review pre-operative instructions and your estimated out-of-pocket cost.
+        Thank you, and we look forward to supporting your care.”
+      </p>
+
+    </div>
+  </div>
+
+  <!-- ---------------- TAB 5: DISPOSITION & NOTES ---------------- -->
+  <div id="dispo" class="tab-content">
+    <div class="card">
+      <h3>Disposition & Notes</h3>
+
+      <label>Was Contact Made?</label>
+      <select id="contactMade">
+        <option>No Answer</option>
+        <option>Yes - Spoke with Patient</option>
+        <option>Voicemail Detected</option>
+        <option>Callback Requested</option>
+        <option>Wrong Number</option>
+      </select>
+
+      <label>Payment Commitment</label>
+      <select id="paymentCommit">
+        <option>No Payment Collected</option>
+        <option>Paid in Full</option>
+        <option>Partial Payment</option>
+        <option>Promise to Pay</option>
+        <option>Declined to Pay</option>
+      </select>
+
+      <label>Amount Collected (Optional)</label>
+      <input id="amountCollected" placeholder="$0.00" />
+
+      <label>Agent Notes</label>
+      <textarea id="agentNotes"></textarea>
+
+      <button class="btn" style="background:var(--success); color:#fff;" onclick="saveDispo()">Save Disposition</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ------------------------ SCRIPT ------------------------- -->
+<script>
+  /* ----- Tabs ----- */
+  const tabs = document.querySelectorAll(".tab");
+  const contents = document.querySelectorAll(".tab-content");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+
+      contents.forEach(c => c.classList.remove("active"));
+      document.getElementById(tab.dataset.tab).classList.add("active");
+    });
+  });
+
+  /* ----- Toast System ----- */
+  function showToast(text) {
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerText = text + " ✓";
+    container.appendChild(toast);
+
+    setTimeout(() => toast.classList.add("show"), 10);
+    setTimeout(() => {
+      toast.classList.remove("show");
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
+  /* Save Disposition */
+  function saveDispo() {
+    showToast("Disposition Saved");
+  }
+
+  /* ----- Dual-Case Query Params ----- */
+  const qp = new URLSearchParams(window.location.search);
+
+  function getQP(...keys) {
+    for (let k of keys) {
+      const v = qp.get(k);
+      if (v && v.trim() !== "") return v;
+    }
+    return "";
+  }
+
+  function cleanPhone(input="") {
+    return input.replace(/[\[\]\(\)]/g,"").trim();
+  }
+
+  /* ----- Defaults ----- */
+  const defaults = {
+    ptDOB: "1984-07-22",
+    ptCase: "PROC-447821",
+    ptSurgeryDate: "2025-12-19",
+    ptCenter: "NovaMed Surgery Center of Madison",
+    ptInsurance: "BlueCross PPO"
+  };
+
+  function setField(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  }
+
+  /* ----- Field Assignment ----- */
+  setField("ptName",
+    getQP("name","Name","FNAME","fname") + " " +
+    getQP("lname","LNAME","LastName","last")
+  );
+
+  setField("ptDOB", getQP("dob","DOB","BirthDate") || defaults.ptDOB);
+  setField("ptPhone", cleanPhone(getQP("phone","PHONE","Mobile","ContactNumber")));
+  setField("ptCase", getQP("service","CASEID","AccountPatientOrMemberID") || defaults.ptCase);
+  setField("ptSurgeryDate", getQP("surgerydate","SURGERYDATE") || defaults.ptSurgeryDate);
+  setField("ptCenter", getQP("center","CENTER","facility") || defaults.ptCenter);
+  setField("ptInsurance", getQP("insurance","INSURANCE","plan") || defaults.ptInsurance);
+
+  /* ----- Simple Estimated Balance (Randomized) ----- */
+  function randomInRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  const est = randomInRange(100, 900);
+  document.getElementById("ptBalance").value = "$" + est.toFixed(2);
+
+  /* ----- AI Script Generation ----- */
+  const aiScript = `
+    Hi ${document.getElementById("ptName").value || "there"}, this is a Patient Representative from 
+    Surgery Partners calling about your upcoming procedure scheduled for 
+    ${document.getElementById("ptSurgeryDate").value}. I want to go over your surgery details, confirm your 
+    insurance information, and review your estimated out-of-pocket cost of 
+    ${document.getElementById("ptBalance").value}. I can also help you take care of that amount today if 
+    you'd like to handle it in advance. Is now still a good time to talk about this?
+  `;
+
+  document.getElementById("aiScript").innerText = aiScript.trim();
+
+</script>
+
+</body>
+</html>
