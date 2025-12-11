@@ -148,6 +148,10 @@
   .btn-danger { background: var(--danger); color: #fff; }
   .btn-danger:hover { background: #d45252; }
 
+  /* Primary button (used for Update Contact Preferences) */
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:hover { background: #00417c; }
+
   /* ---------------- SUPERVISOR ACTION CARD -------------- */
   .supervisor-card {
     background: var(--danger-light);
@@ -334,8 +338,13 @@
 
       <div class="check-item"><input type="checkbox" id="prefSMS">SMS</div>
       <div class="check-item"><input type="checkbox" id="prefEmail">Email</div>
-      <div class="check-item"><input type="checkbox" id="prefVoice">Voice</div>
+      <!-- Voice defaults to checked -->
+      <div class="check-item"><input type="checkbox" id="prefVoice" checked>Voice</div>
       <div class="check-item"><input type="checkbox" id="prefPlan">Enrolled in Pre-Op Payment Plan</div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="updatePrefsBtn">Update Contact Preferences</button>
+      </div>
     </div>
   </div>
 
@@ -447,20 +456,16 @@
   setField("ptCenter", getQP("center","CENTER","facility") || defaults.ptCenter);
   setField("ptInsurance", getQP("insurance","INSURANCE","plan") || defaults.ptInsurance);
 
-  /* ----- Randomized Cost Calculator ----- */
-  function randomInRange(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  const deductible = randomInRange(250, 1500);
-  const coinsurance = randomInRange(50, 600);
-  const copay = randomInRange(25, 100);
-  const total = deductible + coinsurance + copay;
+  /* ----- Fixed Cost Calculator (always $750) ----- */
+  const deductible = 300;
+  const coinsurance = 350;
+  const copay = 100;
+  const total = 750;
 
   document.getElementById("ptBalance").value = "$" + total.toFixed(2);
-  document.getElementById("deductibleVal").innerText = "$" + deductible;
-  document.getElementById("coinsuranceVal").innerText = "$" + coinsurance;
-  document.getElementById("copayVal").innerText = "$" + copay;
+  document.getElementById("deductibleVal").innerText = "$" + deductible.toFixed(2);
+  document.getElementById("coinsuranceVal").innerText = "$" + coinsurance.toFixed(2);
+  document.getElementById("copayVal").innerText = "$" + copay.toFixed(2);
   document.getElementById("totalEstimateVal").innerText = "$" + total.toFixed(2);
 
   /* ----- Cost Breakdown Toggle ----- */
@@ -510,6 +515,14 @@
       showToast(msg);
     });
   });
+
+  /* ----- Update Contact Preferences button ----- */
+  const updatePrefsBtn = document.getElementById("updatePrefsBtn");
+  if (updatePrefsBtn) {
+    updatePrefsBtn.addEventListener("click", () => {
+      showToast("Contact preferences updated");
+    });
+  }
 
   /* ----- Theme Overrides from Architect ----- */
   const buttonColor = getQP("buttonColor","ButtonColor");
